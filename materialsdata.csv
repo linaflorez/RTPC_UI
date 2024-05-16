@@ -1,0 +1,110 @@
+,Description,Previously Called,TYPE,Fiber Category,Resin Category,Sequence Assist,Auto-Sequence,PN Concatenation,PN+Description Concatenation,UOM,Width (in),Length (in),Arial Weight (gsm),Thickness (mm),$/Kg,Heat capcity (J/C),Suggested Process Temp (deg F),Manufacturer,Manufacturer PN (link to datasheet),Misc. Notes,Weld Notes:,Cut Notes:,Inventory Locations:
+,Cetex TC960--- 116gsm--- 63% RW--- 6.5inch W,?,10-FILM,10-CARBON,03-PP,10-10-03-,1,10-10-03-001,10-10-03-001 - Cetex TC960--- 116gsm--- 63% RW--- 6.5inch W,kg,6.5,0,308,0.2794,28.6,,420,Toray,CETEX-TC960 PP,Cetex/Tencate is now Toray,Use a piece of tape or a clip to hold the roll together. Use the thin soldering tip at 370 deg C.,Make sure to align aluminum leads on roll holder with the aluminum U-channel on the mechanical stops.,#N/A
+,Cetex TC960--- 116gsm--- 63% RW--- 13inch W,,10-FILM,10-CARBON,03-PP,10-10-03-,2,10-10-03-002,10-10-03-002 - Cetex TC960--- 116gsm--- 63% RW--- 13inch W,kg,13,0,308,0.2794,28.6,,420,Toray,CETEX-TC960 PP,Cetex/Tencate is now Toray,Two sheets of CF/PP-TC-969-164 are welded together by machine.Any additional welding is done by welding tip at 370 deg. C,Make sure to align aluminum leads on roll holder with the aluminum U-channel on the mechanical stops.,#N/A
+,Cetex TC960--- 116gsm--- 63% RW--- 19.5inch W,,10-FILM,10-CARBON,03-PP,10-10-03-,3,10-10-03-003,10-10-03-003 - Cetex TC960--- 116gsm--- 63% RW--- 19.5inch W,kg,19.5,0,308,0.2795,28.6,,420,Toray,CETEX-TC960 PP,Cetex/Tencate is now Toray,Three sheets of CF/PP-TC-969-164 are welded together by machine.Any additional welding is done by welding tip at 370 deg. C,Make sure to align aluminum leads on roll holder with the aluminum U-channel on the mechanical stops.,#N/A
+,PA6 Fiberglass--- 60% FW--- 13inch W,,10-FILM,20-GLASS,21-PA6,10-20-21-,1,10-20-21-001,10-20-21-001 - PA6 Fiberglass--- 60% FW--- 13inch W,kg,13,0,507,0.3,,,420,Celanese,CFR-TP PA6-GF60-03-332-0.27,,,,#N/A
+,PET Fiberglass--- 12.75inch W,,10-FILM,20-GLASS,06-PET,10-20-06-,1,10-20-06-001,10-20-06-001 - PET Fiberglass--- 12.75inch W,kg,12.75,0,462,0.24,,,420,Celanese,CFR-TP PET-GF60-10-326-0.24,,,,#N/A
+,PP Fiberglass--- 12inch W,,10-FILM,20-GLASS,03-PP,10-20-03-,1,10-20-03-001,10-20-03-001 - PP Fiberglass--- 12inch W,kg,12,0,439,0.25,,,420,Celanese,CFR-TP PP-GF70-13-305-0.25,,,,#N/A
+,PPS Fiberglass--- 12inch W,,10-FILM,20-GLASS,08-PPS,10-20-08-,1,10-20-08-001,10-20-08-001 - PPS Fiberglass--- 12inch W,kg,12,0,,,,,420,Celanese,CFR-TP PPS-GF60-01-305-0.30,,,,#N/A
+,PA6 Carbon Fiber--- 11inch W,,10-FILM,10-CARBON,21-PA6,10-10-21-,1,10-10-21-001,10-10-21-001 - PA6 Carbon Fiber--- 11inch W,kg,11,0,194,0.13,,,420,Celanese,CFR-TP PA6-CF60-03-275-0.13,,,,#N/A
+,Cetex TC940--- 175gsm--- 50% RW--- 6.5” W,,10-FILM,10-CARBON,06-PET,10-10-06-,1,10-10-06-001,10-10-06-001 - Cetex TC940--- 175gsm--- 50% RW--- 6.5” W,kg,6.5,0,382.5,0.25,,,420,Toray,CETEX-TC940 PET,,,,#N/A
+,IE6535--- Glass PP--- 25inch W,,10-FILM,20-GLASS,03-PP,10-20-03-,2,10-20-03-002,10-20-03-002 - IE6535--- Glass PP--- 25inch W,kg,25,0,,,,,,Polystrand,IE6535,Polystrand is now Avient,,,#N/A
+,Maezio 1003t--- Carbon PC--- 28.5inch W,,10-FILM,10-CARBON,02-PC,10-10-02-,1,10-10-02-001,10-10-02-001 - Maezio 1003t--- Carbon PC--- 28.5inch W,kg,28.5,0,248,0.17,87.6,,,Covestro,Maezio 1003t,,,,#N/A
+,IE6030--- Glass PP--- 25inch W,,10-FILM,20-GLASS,03-PP,10-20-03-,3,10-20-03-003,10-20-03-003 - IE6030--- Glass PP--- 25inch W,kg,25,0,,,,,,Polystrand,IE6530,Polystrand is now Avient,,,#N/A
+,Clear PP--- 5 mil thick--- with gloss PET peel-ply--- 60inch W,,10-FILM,00-NO FIBER,53-PP+PET,10-00-53-,1,10-00-53-001,10-00-53-001 - Clear PP--- 5 mil thick--- with gloss PET peel-ply--- 60inch W,kg,60,0,,,,,,Matterworks,PVUVC1120-PEEL,,,,#N/A
+,Modified PP adhesive film--- 37inch W,,10-FILM,00-NO FIBER,04-PP (MODIFIED),10-00-04-,1,10-00-04-001,10-00-04-001 - Modified PP adhesive film--- 37inch W,kg,37,0,,,,,,Protechnic,T04A9TS037X0940F0500,,,,#N/A
+,Clear PP--- 5 mil thick--- no peel-ply--- 60inch W,,10-FILM,00-NO FIBER,03-PP,10-00-03-,1,10-00-03-001,10-00-03-001 - Clear PP--- 5 mil thick--- no peel-ply--- 60inch W,kg,60,0,,,,,,Matterworks,PVUVC1120-NOPEEL,,,You might have to start with the PP/PET Roll and have to peel the liner film after the first cut. Feel free to use the pizza cutter if the rotary cutter doesnt work well.,#N/A
+,TPU film--- 2 mil thick--- 70inch W,,10-FILM,00-NO FIBER,41-TPU,10-00-41-,1,10-00-41-001,10-00-41-001 - TPU film--- 2 mil thick--- 70inch W,kg,70,0,,,,,,American Polyfilm,BT-2085-CS,,,,#N/A
+,Maezio Carbon PC--- 44% FVC--- 4.75inch W,,10-FILM,10-CARBON,02-PC,10-10-02-,2,10-10-02-002,10-10-02-002 - Maezio Carbon PC--- 44% FVC--- 4.75inch W,kg,4.75,0,,,,,,Covestro,87558348,Covestro has discontinued this product,,,#N/A
+,Maezio Glass SE3030--- Makrolon 2205 PC--- 44% FVC--- 4.75inch W,,10-FILM,20-GLASS,02-PC,10-20-02-,1,10-20-02-001,10-20-02-001 - Maezio Glass SE3030--- Makrolon 2205 PC--- 44% FVC--- 4.75inch W,kg,4.75,0,,,,,,Covestro,87685587,Covestro has discontinued this product,,,#N/A
+,Maezio Glass SE3030--- Makrolon 2205 PC--- 44% FVC--- 4.75inch W--- natural,,10-FILM,20-GLASS,02-PC,10-20-02-,2,10-20-02-002,10-20-02-002 - Maezio Glass SE3030--- Makrolon 2205 PC--- 44% FVC--- 4.75inch W--- natural,kg,4.75,0,,,,,,Covestro,87685587-NAT,Covestro has discontinued this product,,,#N/A
+,Glass PETG--- 25inch W--- natural,,10-FILM,20-GLASS,07-PETG,10-20-07-,1,10-20-07-001,10-20-07-001 - Glass PETG--- 25inch W--- natural,kg,25,0,,,,,,,,,,,#N/A
+,IE6537--- Glass PP--- X-ply--- 25inch W,,10-FILM,20-GLASS,03-PP,10-20-03-,4,10-20-03-004,10-20-03-004 - IE6537--- Glass PP--- X-ply--- 25inch W,kg,25,0,,,,,,Polystrand,IE6537,,,,#N/A
+,IE7028--- Glass PE--- Tri-ply--- 25inch W,,10-FILM,20-GLASS,09-PE,10-20-09-,1,10-20-09-001,10-20-09-001 - IE7028--- Glass PE--- Tri-ply--- 25inch W,kg,25,0,,,,,,Polystrand,IE7028,,,,#N/A
+,IE6030--- Glass PP--- 12.5inch W,,10-FILM,20-GLASS,03-PP,10-20-03-,5,10-20-03-005,10-20-03-005 - IE6030--- Glass PP--- 12.5inch W,kg,12.5,0,,,,,,Polystrand,IE6030,,Use a piece of tape or a clip to hold the roll together. Use the wide soldering tip at 370 deg C.,Make sure to align aluminum leads on roll holder with the aluminum U-channel on the mechanical stops.,#N/A
+,Carbon--- Amorphous PA60-404LF--- 19.7inch W,,10-FILM,10-CARBON,24-PA60,10-10-24-,1,10-10-24-001,10-10-24-001 - Carbon--- Amorphous PA60-404LF--- 19.7inch W,kg,19.7,0,,,,,,Teijin,F-UE210-090390,,,,#N/A
+,Cetex TC910--- Glass PA6--- 262gsm--- 40% RC--- 6.5inch W,,10-FILM,20-GLASS,21-PA6,10-20-21-,2,10-20-21-002,10-20-21-002 - Cetex TC910--- Glass PA6--- 262gsm--- 40% RC--- 6.5inch W,kg,6.5,0,250,0.25,10,,,Toray,TC910,,,,#N/A
+,Cetex TC910--- Glass PA6--- 131gsm--- 40% RC--- 3.5inch W,,10-FILM,20-GLASS,21-PA6,10-20-21-,3,10-20-21-003,10-20-21-003 - Cetex TC910--- Glass PA6--- 131gsm--- 40% RC--- 3.5inch W,kg,3.5,0,,,28.6,,,Toray,TC910,,,,#N/A
+,Carbon PA6--- 3inch W,,10-FILM,10-CARBON,21-PA6,10-10-21-,2,10-10-21-002,10-10-21-002 - Carbon PA6--- 3inch W,kg,3,0,,,28.6,,,Gordon Plastics,MS-21-021,,,,#N/A
+,Celanese Glass PPS--- 10.75inch W,,10-FILM,20-GLASS,08-PPS,10-20-08-,2,10-20-08-002,10-20-08-002 - Celanese Glass PPS--- 10.75inch W,kg,10.75,0,,,,,,Celanese,,,,,#N/A
+,Cetex TC1105--- Carbon PPS--- 60%--- 6inch W,,10-FILM,10-CARBON,08-PPS,10-10-08-,1,10-10-08-001,10-10-08-001 - Cetex TC1105--- Carbon PPS--- 60%--- 6inch W,kg,6,0,,,,,,Toray,TC1105,,,,#N/A
+,Baycomp Glass PET--- 60%--- 6.5inch W,,10-FILM,20-GLASS,06-PET,10-20-06-,2,10-20-06-002,10-20-06-002 - Baycomp Glass PET--- 60%--- 6.5inch W,kg,6.5,0,,,,,,Toray,,,,,#N/A
+,Baycomp Glass PP--- 60%--- 6.5inch W,,10-FILM,20-GLASS,03-PP,10-20-03-,6,10-20-03-006,10-20-03-006 - Baycomp Glass PP--- 60%--- 6.5inch W,kg,6.5,0,,,,,,Toray,,,,,#N/A
+,Glass PC+ABS--- 6.5inch W,,10-FILM,20-GLASS,51-PC+ABS,10-20-51-,1,10-20-51-001,10-20-51-001 - Glass PC+ABS--- 6.5inch W,kg,6.5,0,,,,,,Toray,,,,,#N/A
+,Carbon PC+ABS--- 65%--- 0.1mm thick--- 6.5inch W,,10-FILM,10-CARBON,51-PC+ABS,10-10-51-,1,10-10-51-001,10-10-51-001 - Carbon PC+ABS--- 65%--- 0.1mm thick--- 6.5inch W,kg,6.5,0,,,,,,Toray,TC920(?),,,,#N/A
+,Maezio Carbon PC--- flame-resistant--- 4.75inch W,,10-FILM,10-CARBON,02-PC,10-10-02-,3,10-10-02-003,10-10-02-003 - Maezio Carbon PC--- flame-resistant--- 4.75inch W,kg,4.75,0,,,87.6,,,Covestro,1000T170-00-01/44,Covestro has discontinued this product,,,#N/A
+,PP film--- 1mil thick--- 13inch W,,10-FILM,00-NO FIBER,03-PP,10-00-03-,2,10-00-03-002,10-00-03-002 - PP film--- 1mil thick--- 13inch W,kg,13,0,,,,,,Matterworks,AC001 NRE-MW002--- 1mil,,,,#N/A
+,Maezio 1003t--- Carbon PC--- 4.75inch W,,10-FILM,10-CARBON,02-PC,10-10-02-,4,10-10-02-004,10-10-02-004 - Maezio 1003t--- Carbon PC--- 4.75inch W,kg,4.75,0,,,87.6,,,Covestro,Maezio 1003t,Covestro has discontinued this product,,,#N/A
+,Gloss adhesive nylon film--- 1.2 mil thick ,,10-FILM,00-NO FIBER,30-PA,10-00-30-,1,10-00-30-001,10-00-30-001 - Gloss adhesive nylon film--- 1.2 mil thick ,kg,11.75,0,,,,,,Nobelus,LFNGD.3.1175.03000,,,,#N/A
+,Clear PP film,,10-FILM,00-NO FIBER,03-PP,10-00-03-,3,10-00-03-003,10-00-03-003 - Clear PP film,kg,19.75,0,,,,,,,,,,,R04-L05-P01 - 1 kg
+,Opaque PP film,,10-FILM,00-NO FIBER,03-PP,10-00-03-,4,10-00-03-004,10-00-03-004 - Opaque PP film,kg,12,0,,,,,,,,,,,R04-L05-P04 - 5 kg
+,IE6536--- Carbon PP--- 0.01inch thick--- 25inch W,,10-FILM,10-CARBON,03-PP,10-10-03-,4,10-10-03-004,10-10-03-004 - IE6536--- Carbon PP--- 0.01inch thick--- 25inch W,kg,25,0,,,,,,Polystrand,IE6536,Polystrand is now Avient,Use a piece of tape or a clip to hold the roll together. Use the wide soldering tip at 370 deg C.,Make sure to align aluminum leads on roll holder with the aluminum U-channel on the mechanical stops.,#N/A
+,ZRT PP semi-preg film--- 19inch W,,10-FILM,60-ZRT,03-PP,10-60-03-,1,10-60-03-001,10-60-03-001 - ZRT PP semi-preg film--- 19inch W,kg,19,0,,,,,,Boston Materials,Z01-SP1L-PP-W19 (?),,,,#N/A
+,ZRT PP semi-preg film--- 12inch W,,10-FILM,60-ZRT,03-PP,10-60-03-,2,10-60-03-002,10-60-03-002 - ZRT PP semi-preg film--- 12inch W,kg,12,0,,,,,,Boston Materials,Z01-SP1L-PP-W12,,,,#N/A
+,Ti40A Titanium--- 0.010inch thick x 12inch W ,,10-FILM,70-METAL--- TEFLON--- CONSUMABLES--- ETC,00-NO MATRIX,10-70-00-,1,10-70-00-001,10-70-00-001 - Ti40A Titanium--- 0.010inch thick x 12inch W ,kg,12,0,,,,,,Ulbrich Metals,Grade 2 Titanium,,,,#N/A
+,PC sheet--- 0.02inch thick--- 2 ft x 4ft,,10-FILM,00-NO FIBER,02-PC,10-00-02-,1,10-00-02-001,10-00-02-001 - PC sheet--- 0.02inch thick--- 2 ft x 4ft,ea,24,48,,,,,,,,,,,#N/A
+,Hardcoat film--- honeycomb backprint--- 20inch W,,10-FILM,00-NO FIBER,52-HONEYCOMB,10-00-52-,1,10-00-52-001,10-00-52-001 - Hardcoat film--- honeycomb backprint--- 20inch W,kg,20,0,,,,,,Matterworks,8518,,,,#N/A
+,Hardcoat film--- honeycomb backprint--- 35inch W,,10-FILM,00-NO FIBER,52-HONEYCOMB,10-00-52-,2,10-00-52-002,10-00-52-002 - Hardcoat film--- honeycomb backprint--- 35inch W,kg,35,0,,,,,,Matterworks,,,,,#N/A
+,PETG film--- 48inch W,,10-FILM,00-NO FIBER,07-PETG,10-00-07-,1,10-00-07-001,10-00-07-001 - PETG film--- 48inch W,kg,48,0,,,,,,,,,,,#N/A
+,IE6536 ply--- Carbon PP--- 36inch W x 50inch L,,20-PLY,10-CARBON,03-PP,20-10-03-,1,20-10-03-001,20-10-03-001 - IE6536 ply--- Carbon PP--- 36inch W x 50inch L,ea,36,50,,,,,,Polystrand,IE6536,Polystrand is now Avient,Use a piece of tape or a clip to hold the roll together. Use the wide soldering tip at 370 deg C.,Make sure to align aluminum leads on roll holder with the aluminum U-channel on the mechanical stops.,#N/A
+,ZRT PP Laminate--- 5-layer--- 36inch W x 36inch L,,30-LAMINATE,60-ZRT,03-PP,30-60-03-,1,30-60-03-001,30-60-03-001 - ZRT PP Laminate--- 5-layer--- 36inch W x 36inch L,ea,36,36,,,,,,RTPC,,,,,#N/A
+,Woven Carbon fabric--- black Sigratex--- 40inch W,,10-FILM,10-CARBON,00-NO MATRIX,10-10-00-,1,10-10-00-001,10-10-00-001 - Woven Carbon fabric--- black Sigratex--- 40inch W,kg,40,0,,,,,,SGL Carbon,18CW200-TW2/2/100,,,,#N/A
+,Woven Glass fabric--- white--- 5 mil thick--- 40inch W,,10-FILM,20-GLASS,00-NO MATRIX,10-20-00-,1,10-20-00-001,10-20-00-001 - Woven Glass fabric--- white--- 5 mil thick--- 40inch W,kg,40,0,,,,,,Dyneemo,,,,,#N/A
+,Woven Glass PP fabric--- 2x2 twill--- black--- 40inch W,,10-FILM,20-GLASS,03-PP,10-20-03-,7,10-20-03-007,10-20-03-007 - Woven Glass PP fabric--- 2x2 twill--- black--- 40inch W,kg,40,0,,,,,,BGF Industries,Hyb 265 Rov,,,,#N/A
+,Unidirectional Plant Fiber film--- 20inch W,,10-FILM,50-ORGANIC,00-NO MATRIX,10-50-00-,1,10-50-00-001,10-50-00-001 - Unidirectional Plant Fiber film--- 20inch W,kg,20,0,,,,,,Lingrove,D-UD3.2,,,,#N/A
+,Clear matte TPU-Ether film--- 0.03inch thick--- 12inch W,,10-FILM,00-NO FIBER,41-TPU,10-00-41-,2,10-00-41-002,10-00-41-002 - Clear matte TPU-Ether film--- 0.03inch thick--- 12inch W,kg,12,0,,,,,,Wiman Corporation,ET-90090,,,,#N/A
+,Clear matte TPU-Ester film--- 0.03inch thick--- 12inch W,,10-FILM,00-NO FIBER,41-TPU,10-00-41-,3,10-00-41-003,10-00-41-003 - Clear matte TPU-Ester film--- 0.03inch thick--- 12inch W,kg,12,0,,,,,,Wiman Corporation,ES-20085,,,,#N/A
+,Vinyl film--- 0.01inch thick--- 54inch W,,10-FILM,00-NO FIBER,43-PVC,10-00-43-,1,10-00-43-001,10-00-43-001 - Vinyl film--- 0.01inch thick--- 54inch W,kg,54,0,,,,,,,,,,,#N/A
+,Epoxy adhesive film--- matte natural--- 0.005inch thick--- 60inch W,,10-FILM,00-NO FIBER,44-LF610,10-00-44-,1,10-00-44-001,10-00-44-001 - Epoxy adhesive film--- matte natural--- 0.005inch thick--- 60inch W,kg,60,0,,,,,,DH Sutherland,146584,,,,#N/A
+,HT800 Medium Silicone film--- 0.063inch thick--- 36inch W,,10-FILM,70-METAL--- TEFLON--- CONSUMABLES--- ETC,00-NO MATRIX,10-70-00-,2,10-70-00-002,10-70-00-002 - HT800 Medium Silicone film--- 0.063inch thick--- 36inch W,kg,36,0,,,,,,Marian Inc.,HT800-0063x3612,,,,#N/A
+,Woven Carbon Tape--- 3K Dry--- 17.75inch W,,10-FILM,10-CARBON,00-NO MATRIX,10-10-00-,2,10-10-00-002,10-10-00-002 - Woven Carbon Tape--- 3K Dry--- 17.75inch W,kg,17.5,0,,,,,,Soller Composites,3K Carbon WOven Tape 17.75inch,,,,#N/A
+,Cetex TC960 Carbon tape 45% 3.75inch W,,10-FILM,10-CARBON,21-PA6,10-10-21-,3,10-10-21-003,10-10-21-003 - Cetex TC960 Carbon tape 45% 3.75inch W,kg,3.75,0,,,,,,Toray,TC 910,,,,#N/A
+,Cetex TC960 Carbon tape 45%  3.5inch W,,10-FILM,10-CARBON,21-PA6,10-10-21-,4,10-10-21-004,10-10-21-004 - Cetex TC960 Carbon tape 45%  3.5inch W,kg,3.5,0,,,,,,Toray,TC 910,,,,#N/A
+,Lanxess PA6 Carbon 3k twill (1) layer 45%RC,,20-PLY,10-CARBON,21-PA6,20-10-21-,1,20-10-21-001,20-10-21-001 - Lanxess PA6 Carbon 3k twill (1) layer 45%RC,ea,30,26,200,.25,277,,,Lanxess,Optilite: 202-C200(1)/45% na 0---25mm,,Do not weld,Can cut on rotary cutter,#N/A
+,Tafnex PP Carbon 22.5inch,,10-FILM,10-CARBON,03-PP,10-10-03-,5,10-10-03-005,10-10-03-005 - Tafnex PP Carbon 22.5inch,kg,22.5,0,209.6,0.16,52.91,,383,Mitsui Chemicals,TAFNEX™ CF-PP UD Tape Vf50%.,,,,#N/A
+,Cetex TC 910 PA6 Carbon--- 131 gsm 40% RC 6.5inch W,,10-FILM,10-CARBON,21-PA6,10-10-21-,5,10-10-21-005,10-10-21-005 - Cetex TC 910 PA6 Carbon--- 131 gsm 40% RC 6.5inch W,kg,6.5,,232,0.16,28.6,,500,Toray,,,,,#N/A
+,10' LNL ZRT,,10-FILM,60-ZRT,44-LF610,10-60-44-,1,10-60-44-001,10-60-44-001 - 10' LNL ZRT,kg,,,,,,,,,,,,,#N/A
+,Ensinger Carbon 3k twill (TECATEC PA6 CF50 T200 IP)1200mm,,10-FILM,10-CARBON,21-PA6,10-10-21-,6,10-10-21-006,10-10-21-006 - Ensinger Carbon 3k twill (TECATEC PA6 CF50 T200 IP)1200mm,kg,47.24,0,327,0.22,105.75,,240,Ensinger,TECATEC_PA6_CF50_T200_CP-IP-OS_V01_natural-DS_0,,Do not weld,Can cut on rotary cutter,#N/A
+,Ensinger Carbon 3k twill (TECATEC PA6 CF50 T200 IP)635mm,,10-FILM,10-CARBON,21-PA6,10-10-21-,7,10-10-21-007,10-10-21-007 - Ensinger Carbon 3k twill (TECATEC PA6 CF50 T200 IP)635mm,kg,25,0,327,0.22,105.75,,240,Ensinger,TECATEC_PA6_CF50_T200_CP-IP-OS_V01_natural-DS_0,,Do not weld,Can cut on rotary cutter,#N/A
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
