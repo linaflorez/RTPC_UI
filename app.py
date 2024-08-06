@@ -1,9 +1,21 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QTableWidgetItem, QLineEdit, QComboBox, QApplication, QMainWindow, QPushButton, QTableWidget, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import (
+    QTableWidgetItem,
+    QLineEdit,
+    QComboBox,
+    QApplication,
+    QMainWindow,
+    QPushButton,
+    QTableWidget,
+    QVBoxLayout,
+    QWidget,
+)
 from ui import Ui_MainWindow
 from generatingProductionRun import calculations as calculations
 import pandas as pd
+import math
+
 
 class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -15,21 +27,21 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         ### --> STACKUP TAB
         self.materialCSV_here.cursorPositionChanged.connect(self.select_material_csv)
         self.customerCSV_here.cursorPositionChanged.connect(self.select_customer_csv)
-        self.initialize_materials_dropdowns()  
-        self.compositionCode.clicked.connect(self.get_materials_used) 
-        self.clearMaterials.clicked.connect(self.reset_materialsTable)  
+        self.initialize_materials_dropdowns()
+        self.compositionCode.clicked.connect(self.get_materials_used)
+        self.clearMaterials.clicked.connect(self.reset_materialsTable)
         self.materialsAddRow.clicked.connect(self.add_row_materialsTable)
         self.materialsRemoveRow.clicked.connect(self.remove_row_materialsTable)
-
 
         ### --> GENERATOR TAB
         item = QTableWidgetItem()
         self.stackupInfoTable.setItem(2, 0, item)
         self.setup_stackupBreakdown()
         self.clearStackup.clicked.connect(self.clear_stackupBreakdown_columns)
-        self.sendToCustomerInfoSheet.clicked.connect(self.on_sendtoCustomerInfoSheet_clicked)
+        self.sendToCustomerInfoSheet.clicked.connect(
+            self.on_sendtoCustomerInfoSheet_clicked
+        )
 
-        
         #### FUNCTIONALITY ASSOCIATED WITH CUSTOMER INFORMATION TAB ####
         self.initialize_customer_dropdowns()
         self.searchClients.clicked.connect(self.find_Clients)
@@ -41,7 +53,6 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.productInfo = QTableWidget()
         # self.setup_productInfo()
         self.setup_table_widget_signals()
-
 
     ################################################################################
     ################################################################################
@@ -75,29 +86,43 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 PanMargWidth_item = self.productionInfo.item(row, 10)
 
                 # Check if all necessary items exist and are valid floats
-                if all(item and is_float(item.text()) for item in [PanLamLength_item, LamLength_item, PanMargLength_item, PanLamWidth_item, LamWidth_item, PanMargWidth_item]):
+                if all(
+                    item and is_float(item.text())
+                    for item in [
+                        PanLamLength_item,
+                        LamLength_item,
+                        PanMargLength_item,
+                        PanLamWidth_item,
+                        LamWidth_item,
+                        PanMargWidth_item,
+                    ]
+                ):
                     PanLamLength = float(PanLamLength_item.text())
                     LamLength = float(LamLength_item.text())
                     PanMargLength = float(PanMargLength_item.text())
-                    panelLength = ceil(LamLength * PanLamLength / 0.25) * 0.25 + PanMargLength
+                    panelLength = (
+                        math.ceil(LamLength * PanLamLength / 0.25) * 0.25
+                        + PanMargLength
+                    )
                     print(f"Calculated panelLength: {panelLength}")
-                    self.productionInfo.setItem(row, 11, QTableWidgetItem(str(panelLength)))
+                    self.productionInfo.setItem(
+                        row, 11, QTableWidgetItem(str(panelLength))
+                    )
 
                     PanLamWidth = float(PanLamWidth_item.text())
                     LamWidth = float(LamWidth_item.text())
                     PanMargWidth = float(PanMargWidth_item.text())
-                    panelWidth = ceil(LamWidth * PanLamWidth / 0.25) * 0.25 + PanMargWidth
+                    panelWidth = (
+                        math.ceil(LamWidth * PanLamWidth / 0.25) * 0.25 + PanMargWidth
+                    )
                     print(f"Calculated panelWidth: {panelWidth}")
-                    self.productionInfo.setItem(row, 12, QTableWidgetItem(str(panelWidth)))
+                    self.productionInfo.setItem(
+                        row, 12, QTableWidgetItem(str(panelWidth))
+                    )
                 else:
                     print("Not all necessary items are valid floats.")
             else:
                 print("stackup_info_item is missing or empty.")
-
-
-
-
-
 
     #### FUNCTIONALITY ASSOCIATED WITH PROTOTYPING TAB ####
     ### --> STACKUP TAB
@@ -109,7 +134,9 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         """
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
-        file_name, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Select Material CSV", "", "CSV Files (*.csv)", options=options)
+        file_name, _ = QtWidgets.QFileDialog.getOpenFileName(
+            self, "Select Material CSV", "", "CSV Files (*.csv)", options=options
+        )
         if file_name:
             self.materialCSV_here.setText(file_name)
 
@@ -120,7 +147,9 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         """
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
-        file_name, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Select Customer CSV", "", "CSV Files (*.csv)", options=options)
+        file_name, _ = QtWidgets.QFileDialog.getOpenFileName(
+            self, "Select Customer CSV", "", "CSV Files (*.csv)", options=options
+        )
         if file_name:
             self.customerCSV_here.setText(file_name)
 
@@ -128,7 +157,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Read CSV file
         file_path = self.materialCSV_here.text()
         try:
-            if not file_path or file_path == 'Click to update materials info csv':
+            if not file_path or file_path == "Click to update materials info csv":
                 # If file_path is empty or default placeholder text, use default file path
                 self.df = pd.read_csv("materialsdata.csv")
             else:
@@ -139,7 +168,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.df = pd.read_csv("materialsdata.csv")
 
         # Get unique fiber categories
-        fiber_categories = sorted(self.df['Fiber Category'].astype(str).unique())
+        fiber_categories = sorted(self.df["Fiber Category"].astype(str).unique())
         self.resin_combos = []  # Initialize resin_combos as an empty list
 
         # Add combo boxes to the materialsTable
@@ -153,37 +182,38 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def add_dropdowns_to_row(self, row):
         fiber_combo = QtWidgets.QComboBox()
-        fiber_combo.addItems(sorted(self.df['Fiber Category'].astype(str).unique()))
+        fiber_combo.addItems(sorted(self.df["Fiber Category"].astype(str).unique()))
         self.materialsTable.setCellWidget(row, 1, fiber_combo)
         fiber_combo.currentIndexChanged.connect(self.pick_fiber)
 
-
     def get_alphabet_letter(self, index):
-        """ Determines the letter going into the material column of the stackup tab. Relevant to generating the composition code.
-            This function converts an integer index to a string of alphabet letters.
-                For example:
-                0 -> "A", 1 -> "B" and so on.
+        """Determines the letter going into the material column of the stackup tab. Relevant to generating the composition code.
+        This function converts an integer index to a string of alphabet letters.
+            For example:
+            0 -> "A", 1 -> "B" and so on.
         """
-        index += 1  
+        index += 1
         result = ""
 
         while index > 0:
-            index -= 1  
+            index -= 1
             letter = chr(index % 26 + 65)
-            result = letter + result  
-            index //= 26  
+            result = letter + result
+            index //= 26
 
         return result
-    
+
     def add_row_materialsTable(self):
         row_position = self.materialsTable.rowCount()
         self.materialsTable.insertRow(row_position)
         self.add_dropdowns_to_row(row_position)
-        
+
         # Populate the first column with the corresponding alphabet letter
         alphabet_letter = self.get_alphabet_letter(row_position)
         item = QTableWidgetItem(alphabet_letter)
-        item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)  # Make the item uneditable
+        item.setFlags(
+            item.flags() & ~QtCore.Qt.ItemIsEditable
+        )  # Make the item uneditable
         item.setTextAlignment(QtCore.Qt.AlignCenter)  # Align text to the center
         self.materialsTable.setItem(row_position, 0, item)
 
@@ -195,10 +225,12 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             for row in range(self.materialsTable.rowCount()):
                 alphabet_letter = self.get_alphabet_letter(row)
                 item = QTableWidgetItem(alphabet_letter)
-                item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)  # Make the item uneditable
+                item.setFlags(
+                    item.flags() & ~QtCore.Qt.ItemIsEditable
+                )  # Make the item uneditable
                 item.setTextAlignment(QtCore.Qt.AlignCenter)  # Align text to the center
                 self.materialsTable.setItem(row, 0, item)
-    
+
     def pick_fiber(self):
         fiber_combo = self.sender()  # Get the combo box that sent the signal
         fiber_selection = fiber_combo.currentText()
@@ -215,10 +247,10 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             resin_combo.clear()
 
         # Filter dataframe based on fiber selection
-        filtered_df = self.df[self.df['Fiber Category'] == fiber_selection]
+        filtered_df = self.df[self.df["Fiber Category"] == fiber_selection]
 
         # Get unique resin categories for the selected fiber
-        resin_categories = sorted(filtered_df['Resin Category'].astype(str).unique())
+        resin_categories = sorted(filtered_df["Resin Category"].astype(str).unique())
 
         # Create a new resin combo box if it doesn't exist for this row
         if not resin_combo:
@@ -248,11 +280,15 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         fiber_selection = fiber_combo.currentText()
 
         # Filter dataframe based on fiber and resin selection
-        filtered_df = self.df[(self.df['Fiber Category'] == fiber_selection) & 
-            (self.df['Resin Category'] == resin_selection)]
+        filtered_df = self.df[
+            (self.df["Fiber Category"] == fiber_selection)
+            & (self.df["Resin Category"] == resin_selection)
+        ]
 
         # Get unique descriptions for the selected fiber and resin
-        descriptions = sorted(filtered_df['PN+Description Concatenation'].astype(str).unique())
+        descriptions = sorted(
+            filtered_df["PN+Description Concatenation"].astype(str).unique()
+        )
 
         # Create a new description combo box if it doesn't exist for this row
         if not description_combo:
@@ -283,19 +319,23 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         materials_breakdown = []
 
         for i, pnconcatdescription in enumerate(selected_pnconcatdescription):
-            matching_row = self.df[self.df['PN+Description Concatenation'] == pnconcatdescription]
+            matching_row = self.df[
+                self.df["PN+Description Concatenation"] == pnconcatdescription
+            ]
             if not matching_row.empty:
-                pn_concatenation = matching_row.iloc[0]['PN Concatenation']
+                pn_concatenation = matching_row.iloc[0]["PN Concatenation"]
                 material = selected_material[i]
                 used_materials.append(material)
                 materials_breakdown.append(f"{material}:{pn_concatenation}")
 
-        target_range.setText(','.join(materials_breakdown))
+        target_range.setText(",".join(materials_breakdown))
 
     def reset_materialsTable(self):
         """Clears all values and resets the materialsTable to its initial state except the first column."""
         for row in range(self.materialsTable.rowCount()):
-            for col in range(1, self.materialsTable.columnCount()):  # Start from column 1 to skip the first column
+            for col in range(
+                1, self.materialsTable.columnCount()
+            ):  # Start from column 1 to skip the first column
                 cell_widget = self.materialsTable.cellWidget(row, col)
                 if cell_widget:
                     self.materialsTable.removeCellWidget(row, col)
@@ -305,19 +345,22 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Reinitialize the dropdowns
         self.initialize_materials_dropdowns()
 
-
     #### FUNCTIONALITY ASSOCIATED WITH PROTOTYPING TAB ####
     ### --> GENERATOR TAB
     def setup_stackupBreakdown(self):
         for row in range(self.stackupBreakdown.rowCount()):
             # Set QLineEdit for first column
             line_edit1 = QLineEdit()
-            line_edit1.textChanged.connect(lambda text, r=row: self.update_third_column(r))
-            self.stackupBreakdown.setCellWidget(row, 0, line_edit1)  
-            
+            line_edit1.textChanged.connect(
+                lambda text, r=row: self.update_third_column(r)
+            )
+            self.stackupBreakdown.setCellWidget(row, 0, line_edit1)
+
             # Set QLineEdit for second column
             line_edit2 = QLineEdit()
-            line_edit2.textChanged.connect(lambda text, r=row: self.update_third_column(r))
+            line_edit2.textChanged.connect(
+                lambda text, r=row: self.update_third_column(r)
+            )
             self.stackupBreakdown.setCellWidget(row, 1, line_edit2)
 
     def update_third_column(self, row):
@@ -353,7 +396,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 concatenated_values.append(item.text())
                 non_blank_count += 1
 
-        concatenated_text = '/'.join(concatenated_values)
+        concatenated_text = "/".join(concatenated_values)
         target_range_first_row.setText(concatenated_text)
         target_range_second_row.setText(str(non_blank_count))
 
@@ -382,14 +425,28 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         cell_widget.clear()
                 # Clear QTableWidgetItem items in the third column
                 else:
-                    self.stackupBreakdown.setItem(row, col, QtWidgets.QTableWidgetItem(""))
+                    self.stackupBreakdown.setItem(
+                        row, col, QtWidgets.QTableWidgetItem("")
+                    )
 
     def on_sendtoCustomerInfoSheet_clicked(self):
-    
+
         # Get the values from stackupInfoTable
-        value1 = self.stackupInfoTable.item(0, 0).text() if self.stackupInfoTable.item(0, 0) else ''
-        value2 = self.stackupInfoTable.item(1, 0).text() if self.stackupInfoTable.item(1, 0) else ''
-        value3 = self.stackupInfoTable.item(2, 0).text() if self.stackupInfoTable.item(2, 0) else ''
+        value1 = (
+            self.stackupInfoTable.item(0, 0).text()
+            if self.stackupInfoTable.item(0, 0)
+            else ""
+        )
+        value2 = (
+            self.stackupInfoTable.item(1, 0).text()
+            if self.stackupInfoTable.item(1, 0)
+            else ""
+        )
+        value3 = (
+            self.stackupInfoTable.item(2, 0).text()
+            if self.stackupInfoTable.item(2, 0)
+            else ""
+        )
 
         # Calculate the actual row count of productionInfo
         if self.productionInfo.rowCount() == 0:
@@ -397,11 +454,10 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             row_count = self.productionInfo.rowCount()
 
-
         # Find the first empty row in the fifth column of productionInfo
         for row in range(row_count):
             item = self.productionInfo.item(row, 5)
-            if item is None or item.text() == '':
+            if item is None or item.text() == "":
                 # Set the values from stackupInfoTable to productionInfo in the first empty row found
                 item1 = QTableWidgetItem(value1)
                 item1.setTextAlignment(Qt.AlignCenter)
@@ -418,9 +474,8 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 break  # Exit the loop after updating the first empty row
 
         # Check if no empty cell was found
-        if row == row_count - 1 and (item is not None and item.text() != ''):
+        if row == row_count - 1 and (item is not None and item.text() != ""):
             print("No empty cell found in column 5")
-
 
     ########################################
     ### End of Prototyping Tab functions ###
@@ -439,10 +494,10 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         and connects signals to slots for the CLIENT and PART dropdown menus.
         """
         # Read CSV file
-        self.customer_df = pd.read_csv('./customerData.csv')
+        self.customer_df = pd.read_csv("./customerData.csv")
 
         # Get unique CLIENT categories
-        client_categories = sorted(self.customer_df['CLIENT'].astype(str).unique())
+        client_categories = sorted(self.customer_df["CLIENT"].astype(str).unique())
 
         # Add combo boxes to the productionInfo
         for row in range(6):  # Assuming you have 6 rows
@@ -469,10 +524,10 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             part_combo.clear()
 
         # Filter dataframe based on client selection
-        filtered_df = self.customer_df[self.customer_df['CLIENT'] == client_selection]
+        filtered_df = self.customer_df[self.customer_df["CLIENT"] == client_selection]
 
         # Get unique part categories for the selected client
-        part_categories = sorted(filtered_df['PART'].astype(str).unique())
+        part_categories = sorted(filtered_df["PART"].astype(str).unique())
 
         # Create a new part combo box if it doesn't exist for this row
         if not part_combo:
@@ -494,7 +549,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 break
 
         # Filter dataframe based on part selection
-        filtered_df = self.customer_df[self.customer_df['PART'] == part_selection]
+        filtered_df = self.customer_df[self.customer_df["PART"] == part_selection]
 
         if not filtered_df.empty:
             row_data = filtered_df.iloc[0]  # Get the first matching row
@@ -502,16 +557,19 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # Populate the productionInfo with the corresponding data
             for col in range(2, self.productionInfo.columnCount()):
                 # Check for NaN and replace with an empty string if NaN
-                value = '' if pd.isna(row_data.iloc[col+1]) else str(row_data.iloc[col+1])
+                value = (
+                    ""
+                    if pd.isna(row_data.iloc[col + 1])
+                    else str(row_data.iloc[col + 1])
+                )
                 item = QTableWidgetItem(value)
                 self.productionInfo.setItem(row_index, col, item)
-
 
     def find_Clients(self):
         row_position = self.productionInfo.rowCount()
         self.productionInfo.insertRow(row_position)
         client_combo = QtWidgets.QComboBox()
-        client_combo.addItems(sorted(self.customer_df['CLIENT'].astype(str).unique()))
+        client_combo.addItems(sorted(self.customer_df["CLIENT"].astype(str).unique()))
         self.productionInfo.setCellWidget(row_position, 0, client_combo)
 
     def add_New_Product(self):
@@ -530,16 +588,19 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def add_client_dropdowns_to_row(self, row):
         client_combo = QtWidgets.QComboBox()
-        client_combo.addItems(sorted(self.customer_df['CLIENT'].astype(str).unique()))
+        client_combo.addItems(sorted(self.customer_df["CLIENT"].astype(str).unique()))
         self.productionInfo.setCellWidget(row, 0, client_combo)
         client_combo.currentIndexChanged.connect(self.pick_client)
-    
+
     def readingOrder(self):
         num_rows = self.productionInfo.rowCount()
         num_columns = self.productionInfo.columnCount()
 
         # Get the column headers
-        headers = [self.productionInfo.horizontalHeaderItem(col).text() for col in range(num_columns)]
+        headers = [
+            self.productionInfo.horizontalHeaderItem(col).text()
+            for col in range(num_columns)
+        ]
 
         # Initialize a dictionary to hold the table data
         table_data = {header: [] for header in headers}
@@ -559,7 +620,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         table_data[headers[col]].append(item.text())
                     else:
                         table_data[headers[col]].append("")
-        
+
         # Ensure all columns have the same number of entries
         max_length = max(len(col) for col in table_data.values())
         for key in table_data:
@@ -575,31 +636,33 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             return output_df
         else:
             pass
-    
+
     def populate_Production_Sheets(self):
-        df = self.readingOrder()  
+        df = self.readingOrder()
 
         if df is None or df.empty:
             print("DataFrame is None or empty")
             pass
-        else: 
+        else:
             # Populate initial cuts table
             self.initialCutsTable.setRowCount(0)
             for row_index, row in df.iterrows():
                 instructions_initial = f"Make {row['initial_number_of_cuts']} number of cuts at {row['cutangle']} degrees."
                 row_data_initial = [
-                    row['product number'],
+                    row["product number"],
                     instructions_initial,
-                    row['cutangle'],
-                    row['initial_cut_length'],
-                    row['initial_number_of_cuts'],
-                    row['Description']
+                    row["cutangle"],
+                    row["initial_cut_length"],
+                    row["initial_number_of_cuts"],
+                    row["Description"],
                 ]
                 self.initialCutsTable.insertRow(self.initialCutsTable.rowCount())
                 for column_index, data in enumerate(row_data_initial):
                     item = QTableWidgetItem(str(data))
                     item.setTextAlignment(Qt.AlignCenter)
-                    self.initialCutsTable.setItem(self.initialCutsTable.rowCount() - 1, column_index, item)
+                    self.initialCutsTable.setItem(
+                        self.initialCutsTable.rowCount() - 1, column_index, item
+                    )
             self.initialCutsTable.resizeColumnsToContents()
 
             # Populate welding table
@@ -607,16 +670,18 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             for row_index, row in df.iterrows():
                 instructions_welding = f"Weld {row['initial_number_of_cuts']} number of cuts at {row['cutangle']} degrees."
                 row_data_welding = [
-                    row['product number'],
+                    row["product number"],
                     instructions_welding,
-                    row['cutangle'],
-                    row['number_of_welds'],
+                    row["cutangle"],
+                    row["number_of_welds"],
                 ]
                 self.weldingTable.insertRow(self.weldingTable.rowCount())
                 for column_index, data in enumerate(row_data_welding):
                     item = QTableWidgetItem(str(data))
                     item.setTextAlignment(Qt.AlignCenter)
-                    self.weldingTable.setItem(self.weldingTable.rowCount() - 1, column_index, item)
+                    self.weldingTable.setItem(
+                        self.weldingTable.rowCount() - 1, column_index, item
+                    )
             self.weldingTable.resizeColumnsToContents()
 
             # Populate secondary cuts table
@@ -624,32 +689,26 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             for row_index, row in df.iterrows():
                 instructions_secondary = f"Make {row['secondary_number_of_cuts']} number of cuts at {row['cutangle']} degrees."
                 row_data_secondary = [
-                    row['product number'],
+                    row["product number"],
                     instructions_secondary,
-                    row['cutangle'],
-                    row['secondary_cut_length'],
-                    row['secondary_number_of_cuts'],
+                    row["cutangle"],
+                    row["secondary_cut_length"],
+                    row["secondary_number_of_cuts"],
                 ]
                 self.secondaryCutsTable.insertRow(self.secondaryCutsTable.rowCount())
                 for column_index, data in enumerate(row_data_secondary):
                     item = QTableWidgetItem(str(data))
                     item.setTextAlignment(Qt.AlignCenter)
-                    self.secondaryCutsTable.setItem(self.secondaryCutsTable.rowCount() - 1, column_index, item)
+                    self.secondaryCutsTable.setItem(
+                        self.secondaryCutsTable.rowCount() - 1, column_index, item
+                    )
             self.secondaryCutsTable.resizeColumnsToContents()
-
-
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = MyWindow()
     MainWindow.show()
     sys.exit(app.exec_())
-
-
-
-
-
-
-
