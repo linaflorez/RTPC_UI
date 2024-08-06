@@ -1,0 +1,10 @@
+CLIENT,PART,,TARGET PARTS,PLIES,STACKUP,LENGTH (0 DEGREES) ,WIDTH (90 DEGREES) ,PARTS/LENGTH ,PARTS/WIDTH ,LENGTH MARGIN,WIDTH MARGIN,PANEL LENGTH ,PANEL WIDTH ,MATERIALS,LAMINATION TEMP,LAMINATION TIME,Press Notch,Oven Temperature (deg C),Error Temperature (deg C),Pressure (MPa),Hold Time (sec),Cycle Time (sec),Mold Area (in^2),Mold Qty (UL),Lam Tray (UL),Mold Top Temp (deg C),Mold Bot Temp (deg C),Mold Release (UL),Top Mold Insulation Spacer (UL),Bot Mold Insulation Spacer (UL),Mold Direction - Sticker Front (UL),Tray Width (in),Tray alignment position 1 (in),Tray alignment position 2 (in),Bolt Configuration (UL)
+Footlevelers,1521101,,10,7,A90/B0/B90/B0/B0/B90/B0,19.375,38.75,1,1,0,0,19.5,38.75,"B:10-10-03-003,A:10-00-52-001",,,,,,,,,,,,,,,,,,,,,
+Footlevelers,1521102,,25,11,A90/B0/B90/B0/B90/B0/B0/B90/B0/B90/B0,19.375,38.75,1,1,0,0,19.5,38.75,"B:10-10-03-003,A:10-00-52-001",,,,,,,,,,,,,,,,,,,,,
+Footlevelers,1521103,,10,13,A90/B0/B90/B0/B90/B0/B90/B90/B0/B90/B0/B90/B0,19.375,38.75,1,1,0,0,19.5,38.75,"B:10-10-03-003,A:10-00-52-001",,,,,,,,,,,,,,,,,,,,,
+Fillauer,76600,,,8,A0/C0/B90/C0/C90/B0/C90/A0,36,36,1,1,0,0,36,36,"B:10-10-03-003,D:10-20-03-003,A:10-00-04-001,C:10-20-03-004",,,,,,,,,,,,,,,,,,,,,
+Fillauer,76602,,,10,A0/C0/B90/C0/C90/C90/C0/B90/C0/A0,36,36,1,1,0,0,36,36,"B:10-10-03-003,D:10-20-03-003,A:10-00-04-001,C:10-20-03-004",,,,,,,,,,,,,,,,,,,,,
+Fillauer,76638,,,11,A0/C0/C90/C0/C90/C0/C90/C0/C90/C0/A0,36,36,1,1,0,0,36,36,"B:10-10-03-003,D:10-20-03-003,A:10-00-04-001,C:10-20-03-004",,,,,,,,,,,,,,,,,,,,,
+Fillauer,76606,,,12,A0/D0/B0/B90/B0/D90/D90/B0/B90/B0/D0/A0,36,36,1,1,0,0,36,36,"B:10-10-03-003,D:10-20-03-003,A:10-00-04-001,C:10-20-03-004",,,,,,,,,,,,,,,,,,,,,
+Fillauer,76604,,,11,A0/D0/B90/D0/D90/D0/D90/D0/B90/D0/A0,36,36,1,1,0,0,36,36,"B:10-10-03-003,D:10-20-03-003,A:10-00-04-001,C:10-20-03-004",,,,,,,,,,,,,,,,,,,,,
+LIM Innovations,340-00046,,,34,A0/B0/B0/B0/B0/B0/B0/B0/B-15/B15/B-15/B15/B-15/B15/B0/B0/B0/B0/B0/B0/B15/B-15/B15/B-15/B15/B-15/B0/B0/B0/B0/B0/B0/B0/A0,23,1.45,1,19,0.25,0.75,23.25,28.5,"B:10-10-02-001,A:10-00-02-001",,,3,295,28,8.5,60,60,34.104,1,1,139,130,NO,1,1,Yes,5.5,7.875,NA,2-14
