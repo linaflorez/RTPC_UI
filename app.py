@@ -15,6 +15,7 @@ from ui import Ui_MainWindow
 from generatingProductionRun import calculations as calculations
 import pandas as pd
 import math
+from math import ceil, isnan
 
 
 class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -27,7 +28,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         ### --> STACKUP TAB
         self.materialCSV_here.cursorPositionChanged.connect(self.select_material_csv)
         self.customerCSV_here.cursorPositionChanged.connect(self.select_customer_csv)
-        self.initialize_materials_dropdowns()
+        self.initialize_materials_dropdowns("")
         self.compositionCode.clicked.connect(self.get_materials_used)
         self.clearMaterials.clicked.connect(self.reset_materialsTable)
         self.materialsAddRow.clicked.connect(self.add_row_materialsTable)
@@ -43,86 +44,53 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         )
 
         #### FUNCTIONALITY ASSOCIATED WITH CUSTOMER INFORMATION TAB ####
-        self.initialize_customer_dropdowns()
+        self.initialize_customer_dropdowns("")
         self.searchClients.clicked.connect(self.find_Clients)
         self.createNewProduct.clicked.connect(self.add_New_Product)
         self.customerAddRow.clicked.connect(self.add_row_customerTable)
         self.customerRemoveRow.clicked.connect(self.remove_row_customerTable)
         self.generateRun.clicked.connect(self.populate_Production_Sheets)
 
+        self.productionInfo.cellChanged.connect(self.handle_item_changed)
         self.productInfo = QTableWidget()
         # self.setup_productInfo()
-        self.setup_table_widget_signals()
+        # self.setup_table_widget_signals()
 
     ################################################################################
     ################################################################################
 
-    def setup_table_widget_signals(self):
-        # Connect the itemChanged signal to the handle_item_changed slot
-        self.productionInfo.itemChanged.connect(self.handle_item_changed)
+    # def setup_table_widget_signals(self):
+    #     # Connect the itemChanged signal to the handle_item_changed slot
+    #     self.productionInfo.itemChanged.connect(self.handle_item_changed)
 
-    def handle_item_changed(self, item):
-        def is_float(value):
-            try:
-                float(value)
-                return True
-            except ValueError:
-                return False
+    def handle_item_changed(self, row, col):
+    # Only proceed if col is within the range 4:9 (corrected range)
+        if 4 <= col <= 9:
+            # Check if row[4] is not empty
+            if self.productionInfo.item(row, 4) and self.productionInfo.item(row, 4).text():
+                try:
+                    # Retrieve values from the relevant cells, ensuring the items are not None
+                    value_4_item = self.productionInfo.item(row, 5)
+                    value_6_item = self.productionInfo.item(row, 7)
+                    value_8_item = self.productionInfo.item(row, 9)
 
-        row = item.row()
-        column = item.column()
+                    if value_4_item and value_6_item and value_8_item:
+                        value_4 = float(value_4_item.text())
+                        value_6 = float(value_6_item.text())
+                        value_8 = float(value_8_item.text())
 
-        print(f"Item changed at row: {row}, column: {column}")
+                        # Perform the calculation
+                        result = ceil(value_4 * value_6 / 0.25) * 0.25 + value_8
 
-        # Columns to check
-        if column in [5, 6, 7, 8, 9, 11]:
-            stackup_info_item = self.productionInfo.item(row, 4)
-            if stackup_info_item and stackup_info_item.text():
-                PanLamLength_item = self.productionInfo.item(row, 5)
-                LamLength_item = self.productionInfo.item(row, 7)
-                PanMargLength_item = self.productionInfo.item(row, 9)
-                PanLamWidth_item = self.productionInfo.item(row, 6)
-                LamWidth_item = self.productionInfo.item(row, 8)
-                PanMargWidth_item = self.productionInfo.item(row, 10)
+                        # Update row[11] with the result
+                        self.productionInfo.setItem(row, 11, QTableWidgetItem(str(result)))
+                    else:
+                        # Set row[11] to NaN if any item is None
+                        self.productionInfo.setItem(row, 11, QTableWidgetItem('NaN'))
+                except (ValueError, TypeError):
+                    # Set row[11] to NaN if any value is not a float
+                    self.productionInfo.setItem(row, 11, QTableWidgetItem('NaN'))
 
-                # Check if all necessary items exist and are valid floats
-                if all(
-                    item and is_float(item.text())
-                    for item in [
-                        PanLamLength_item,
-                        LamLength_item,
-                        PanMargLength_item,
-                        PanLamWidth_item,
-                        LamWidth_item,
-                        PanMargWidth_item,
-                    ]
-                ):
-                    PanLamLength = float(PanLamLength_item.text())
-                    LamLength = float(LamLength_item.text())
-                    PanMargLength = float(PanMargLength_item.text())
-                    panelLength = (
-                        math.ceil(LamLength * PanLamLength / 0.25) * 0.25
-                        + PanMargLength
-                    )
-                    print(f"Calculated panelLength: {panelLength}")
-                    self.productionInfo.setItem(
-                        row, 11, QTableWidgetItem(str(panelLength))
-                    )
-
-                    PanLamWidth = float(PanLamWidth_item.text())
-                    LamWidth = float(LamWidth_item.text())
-                    PanMargWidth = float(PanMargWidth_item.text())
-                    panelWidth = (
-                        math.ceil(LamWidth * PanLamWidth / 0.25) * 0.25 + PanMargWidth
-                    )
-                    print(f"Calculated panelWidth: {panelWidth}")
-                    self.productionInfo.setItem(
-                        row, 12, QTableWidgetItem(str(panelWidth))
-                    )
-                else:
-                    print("Not all necessary items are valid floats.")
-            else:
-                print("stackup_info_item is missing or empty.")
 
     #### FUNCTIONALITY ASSOCIATED WITH PROTOTYPING TAB ####
     ### --> STACKUP TAB
@@ -139,6 +107,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         )
         if file_name:
             self.materialCSV_here.setText(file_name)
+            self.initialize_materials_dropdowns(file_name)
 
     def select_customer_csv(self):
         """
@@ -152,20 +121,23 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         )
         if file_name:
             self.customerCSV_here.setText(file_name)
+            self.initialize_customer_dropdowns(file_name)
 
-    def initialize_materials_dropdowns(self):
+    def initialize_materials_dropdowns(self, file_name):
         # Read CSV file
-        file_path = self.materialCSV_here.text()
         try:
-            if not file_path or file_path == "Click to update materials info csv":
-                # If file_path is empty or default placeholder text, use default file path
-                self.df = pd.read_csv("materialsdata.csv")
-            else:
-                # Read CSV file from the specified path
-                self.df = pd.read_csv(file_path)
+            self.df = pd.read_csv(file_name)
         except FileNotFoundError:
             # If the specified file is not found, use default file path
-            self.df = pd.read_csv("materialsdata.csv")
+            column_names = [
+                "Description", "Previously Called", "TYPE", "Fiber Category", "Resin Category", "Sequence Assist",
+                "Auto-Sequence", "PN Concatenation", "PN+Description Concatenation", "UOM", "Width (in)", "Length (in)",
+                "Arial Weight (gsm)", "Thickness (mm)", "$/Kg", "Heat capacity (J/C)", "Suggested Process Temp (deg F)",
+                "Manufacturer", "Manufacturer PN (link to datasheet)", "Misc. Notes", "Weld Notes:", "Cut Notes:", "Inventory Locations:"
+            ]
+
+            self.df = pd.DataFrame(columns=column_names)
+
 
         # Get unique fiber categories
         fiber_categories = sorted(self.df["Fiber Category"].astype(str).unique())
@@ -486,7 +458,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     #### FUNCTIONALITY ASSOCIATED WITH CUSTOMER INFORMATION TAB ####
 
-    def initialize_customer_dropdowns(self):
+    def initialize_customer_dropdowns(self, file_name):
         """
         Initializes the dropdown menus in the UI for customer information.
 
@@ -494,7 +466,21 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         and connects signals to slots for the CLIENT and PART dropdown menus.
         """
         # Read CSV file
-        self.customer_df = pd.read_csv("./customerData.csv")
+        try:
+            self.customer_df = pd.read_csv(file_name)
+        except FileNotFoundError:
+            column_names = [
+                "CLIENT", "PART", "TARGET PARTS", "PLIES", "STACKUP", "LENGTH (0 DEGREES)", "WIDTH (90 DEGREES)",
+                "PARTS/LENGTH", "PARTS/WIDTH", "LENGTH MARGIN", "WIDTH MARGIN", "PANEL LENGTH", "PANEL WIDTH",
+                "MATERIALS", "LAMINATION TEMP", "LAMINATION TIME", "Press Notch", "Oven Temperature (deg C)",
+                "Error Temperature (deg C)", "Pressure (MPa)", "Hold Time (sec)", "Cycle Time (sec)", "Mold Area (in^2)",
+                "Mold Qty (UL)", "Lam Tray (UL)", "Mold Top Temp (deg C)", "Mold Bot Temp (deg C)", "Mold Release (UL)",
+                "Top Mold Insulation Spacer (UL)", "Bot Mold Insulation Spacer (UL)", "Mold Direction - Sticker Front (UL)",
+                "Tray Width (in)", "Tray alignment position 1 (in)", "Tray alignment position 2 (in)", "Bolt Configuration (UL)"
+            ]
+
+            self.customer_df = pd.DataFrame(columns=column_names)
+
 
         # Get unique CLIENT categories
         client_categories = sorted(self.customer_df["CLIENT"].astype(str).unique())
@@ -629,13 +615,17 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # Convert the dictionary to a DataFrame
         customer_df = pd.DataFrame(table_data)
-        materials_df = pd.read_csv("materialsdata.csv")
 
-        if not customer_df.empty:
-            output_df = calculations(materials_df, customer_df)
-            return output_df
+        if self.material_csv_file_path:  # Check if material CSV file path is set
+            materials_df = pd.read_csv(self.material_csv_file_path)
+            if not customer_df.empty:
+                output_df = calculations(materials_df, customer_df)
+                return output_df
+            else:
+                pass
         else:
-            pass
+            print("Material CSV file path not set.")
+            return None
 
     def populate_Production_Sheets(self):
         df = self.readingOrder()
@@ -703,7 +693,14 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         self.secondaryCutsTable.rowCount() - 1, column_index, item
                     )
             self.secondaryCutsTable.resizeColumnsToContents()
-
+    
+    def show_error_message(self, message):
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(QtWidgets.QMessageBox.Critical)
+        msg.setText("Error")
+        msg.setInformativeText(message)
+        msg.setWindowTitle("Error")
+        msg.exec_()
 
 if __name__ == "__main__":
     import sys
