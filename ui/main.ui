@@ -35,7 +35,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_12">
+   <layout class="QVBoxLayout" name="verticalLayout_4">
     <item>
      <widget class="QTabWidget" name="mainTabWidget">
       <property name="currentIndex">
@@ -291,49 +291,11 @@
              </layout>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout">
+             <layout class="QHBoxLayout" name="horizontalLayout_6">
               <item>
                <widget class="QLineEdit" name="materialCSV_here">
                 <property name="text">
                  <string>Click to update materials info csv</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="materialsUpload">
-                <property name="text">
-                 <string>Materials Upload</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="horizontalSpacer_2">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_6">
-              <item>
-               <widget class="QLineEdit" name="customerCSV_here">
-                <property name="text">
-                 <string>Click to update customer info csv</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="customerUpload">
-                <property name="text">
-                 <string>Customer Upload</string>
                 </property>
                </widget>
               </item>
@@ -798,7 +760,7 @@
        <attribute name="title">
         <string>Order Infomation</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
+       <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
          <widget class="QTableWidget" name="productionInfo">
           <property name="minimumSize">
@@ -1230,6 +1192,37 @@
           </item>
           <item>
            <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLineEdit" name="customerCSV_here">
+            <property name="text">
+             <string>Click to update customer info csv</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="customerUpload">
+            <property name="text">
+             <string>Customer Upload</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_2">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
