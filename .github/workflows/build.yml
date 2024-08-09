@@ -28,12 +28,16 @@ jobs:
           pip install -r requirements.txt
           pip install py2app
 
+      - name: Extract tag name
+        id: extract_tag
+        run: echo "TAG_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
       - name: Build with py2app
         run: |
           python setup.py py2app
 
       - name: Compress app into zip
-        run: zip -r MyApp-${{ github.ref }}.zip dist/*.app
+        run: zip -r MyApp-${{ env.TAG_NAME }}.zip dist/*.app
 
       - name: Install GitHub CLI
         run: |
@@ -43,4 +47,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
         run: |
-          gh release create ${{ github.ref }} MyApp-${{ github.ref }}.zip --title "Release ${{ github.ref }}" --notes "Automatically generated release"
+          gh release create ${{ env.TAG_NAME }} MyApp-${{ env.TAG_NAME }}.zip --title "Release ${{ env.TAG_NAME }}" --notes "Automatically generated release"
