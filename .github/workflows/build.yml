@@ -1,5 +1,8 @@
 name: Build MacOS App and Publish Release
 
+permissions:
+  contents: write
+
 on:
   push:
     tags:
