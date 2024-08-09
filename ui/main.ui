@@ -39,7 +39,7 @@
     <item>
      <widget class="QTabWidget" name="mainTabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="PrototypingTab">
        <attribute name="title">
@@ -295,7 +295,7 @@
               <item>
                <widget class="QLineEdit" name="materialCSV_here">
                 <property name="text">
-                 <string>Click to update materials info csv</string>
+                 <string>Select Material CSV</string>
                 </property>
                </widget>
               </item>
@@ -1079,7 +1079,7 @@
                </size>
               </property>
               <property name="text">
-               <string>Search Through Companies</string>
+               <string>Search Companies</string>
               </property>
              </widget>
             </item>
@@ -1092,7 +1092,7 @@
                </size>
               </property>
               <property name="text">
-               <string>Initialize New Product</string>
+               <string>New Product</string>
               </property>
              </widget>
             </item>
@@ -1105,7 +1105,7 @@
                </size>
               </property>
               <property name="text">
-               <string>Send to Customer Database</string>
+               <string>Update Product Database</string>
               </property>
              </widget>
             </item>
@@ -1163,19 +1163,6 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_9">
-              <property name="maximumSize">
-               <size>
-                <width>100</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Send to PDF</string>
-              </property>
-             </widget>
-            </item>
-            <item>
              <spacer name="verticalSpacer_3">
               <property name="orientation">
                <enum>Qt::Vertical</enum>
@@ -1210,14 +1197,7 @@
           <item>
            <widget class="QLineEdit" name="customerCSV_here">
             <property name="text">
-             <string>Click to update customer info csv</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="customerUpload">
-            <property name="text">
-             <string>Customer Upload</string>
+             <string>Select Customer CSV</string>
             </property>
            </widget>
           </item>

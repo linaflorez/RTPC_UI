@@ -2,11 +2,6 @@ import numpy as np
 import pandas as pd
 
 
-# def readData(name_of_data, data):
-#     df = pd.read_csv(data_list)
-#     return df
-
-
 def merging_dfs(materials_df, customer_df):
 
     # Breaking down a stackup into each individual ply (i.e. A0/A90/A90/A0 --> A0,A90,A90,A0)

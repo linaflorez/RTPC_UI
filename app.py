@@ -1,16 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (
-    QTableWidgetItem,
-    QLineEdit,
-    QComboBox,
-    QApplication,
-    QMainWindow,
-    QPushButton,
-    QTableWidget,
-    QVBoxLayout,
-    QWidget,
-)
+from PyQt5.QtWidgets import (QTableWidgetItem,QLineEdit,QComboBox,QApplication,QMainWindow,QPushButton,QTableWidget,QVBoxLayout,QWidget,)
 from ui import Ui_MainWindow
 from generatingProductionRun import calculations as calculations
 import pandas as pd
@@ -27,7 +17,6 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         #### FUNCTIONALITY ASSOCIATED WITH PROTOTYPING TAB ####
         ### --> STACKUP TAB
         self.materialCSV_here.cursorPositionChanged.connect(self.select_material_csv)
-        self.customerCSV_here.cursorPositionChanged.connect(self.select_customer_csv)
         self.initialize_materials_dropdowns("")
         self.compositionCode.clicked.connect(self.get_materials_used)
         self.clearMaterials.clicked.connect(self.reset_materialsTable)
@@ -44,107 +33,77 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         )
 
         #### FUNCTIONALITY ASSOCIATED WITH CUSTOMER INFORMATION TAB ####
+        self.customerCSV_here.cursorPositionChanged.connect(self.select_customer_csv)
         self.initialize_customer_dropdowns("")
         self.searchClients.clicked.connect(self.find_Clients)
         self.createNewProduct.clicked.connect(self.add_New_Product)
         self.customerAddRow.clicked.connect(self.add_row_customerTable)
         self.customerRemoveRow.clicked.connect(self.remove_row_customerTable)
         self.generateRun.clicked.connect(self.populate_Production_Sheets)
+        self.productionInfo.cellChanged.connect(self.calculate_dimensions)    
+        self.pushButton_6.clicked.connect (self.save_table_to_csv)    
 
-        self.productionInfo.cellChanged.connect(self.handle_item_changed)
-        self.productInfo = QTableWidget()
-        # self.setup_productInfo()
-        # self.setup_table_widget_signals()
 
     ################################################################################
     ################################################################################
-
-    # def setup_table_widget_signals(self):
-    #     # Connect the itemChanged signal to the handle_item_changed slot
-    #     self.productionInfo.itemChanged.connect(self.handle_item_changed)
-
-    def handle_item_changed(self, row, col):
-    # Only proceed if col is within the range 4:9 (corrected range)
-        if 4 <= col <= 9:
-            # Check if row[4] is not empty
-            if self.productionInfo.item(row, 4) and self.productionInfo.item(row, 4).text():
-                try:
-                    # Retrieve values from the relevant cells, ensuring the items are not None
-                    value_4_item = self.productionInfo.item(row, 5)
-                    value_6_item = self.productionInfo.item(row, 7)
-                    value_8_item = self.productionInfo.item(row, 9)
-
-                    if value_4_item and value_6_item and value_8_item:
-                        value_4 = float(value_4_item.text())
-                        value_6 = float(value_6_item.text())
-                        value_8 = float(value_8_item.text())
-
-                        # Perform the calculation
-                        result = ceil(value_4 * value_6 / 0.25) * 0.25 + value_8
-
-                        # Update row[11] with the result
-                        self.productionInfo.setItem(row, 11, QTableWidgetItem(str(result)))
-                    else:
-                        # Set row[11] to NaN if any item is None
-                        self.productionInfo.setItem(row, 11, QTableWidgetItem('NaN'))
-                except (ValueError, TypeError):
-                    # Set row[11] to NaN if any value is not a float
-                    self.productionInfo.setItem(row, 11, QTableWidgetItem('NaN'))
-
 
     #### FUNCTIONALITY ASSOCIATED WITH PROTOTYPING TAB ####
     ### --> STACKUP TAB
 
     def select_material_csv(self):
-        """
-        Slot function that is called when the materialCSV_here QLineEdit is clicked.
-        Opens a file dialog that allows the user to select a file from their repositories.
-        """
-        options = QtWidgets.QFileDialog.Options()
-        options |= QtWidgets.QFileDialog.DontUseNativeDialog
-        file_name, _ = QtWidgets.QFileDialog.getOpenFileName(
-            self, "Select Material CSV", "", "CSV Files (*.csv)", options=options
-        )
-        if file_name:
-            self.materialCSV_here.setText(file_name)
-            self.initialize_materials_dropdowns(file_name)
+            """
+            Slot function that is called when the materialCSV_here QLineEdit is clicked.
+            Opens a file dialog that allows the user to select a file from their repositories.
+            """
+            options = QtWidgets.QFileDialog.Options()
+            options |= QtWidgets.QFileDialog.DontUseNativeDialog
+            file_name, _ = QtWidgets.QFileDialog.getOpenFileName(
+                self, "Select Material CSV", "", "CSV Files (*.csv)", options=options
+            )
+            if file_name:
+                self.materialCSV_here.setText(file_name)
+                self.initialize_materials_dropdowns(file_name)
 
-    def select_customer_csv(self):
-        """
-        Slot function that is called when the materialCSV_here QLineEdit is clicked.
-        Opens a file dialog that allows the user to select a file from their repositories.
-        """
-        options = QtWidgets.QFileDialog.Options()
-        options |= QtWidgets.QFileDialog.DontUseNativeDialog
-        file_name, _ = QtWidgets.QFileDialog.getOpenFileName(
-            self, "Select Customer CSV", "", "CSV Files (*.csv)", options=options
-        )
-        if file_name:
-            self.customerCSV_here.setText(file_name)
-            self.initialize_customer_dropdowns(file_name)
 
     def initialize_materials_dropdowns(self, file_name):
-        # Read CSV file
-        try:
-            self.df = pd.read_csv(file_name)
-        except FileNotFoundError:
-            # If the specified file is not found, use default file path
-            column_names = [
-                "Description", "Previously Called", "TYPE", "Fiber Category", "Resin Category", "Sequence Assist",
-                "Auto-Sequence", "PN Concatenation", "PN+Description Concatenation", "UOM", "Width (in)", "Length (in)",
-                "Arial Weight (gsm)", "Thickness (mm)", "$/Kg", "Heat capacity (J/C)", "Suggested Process Temp (deg F)",
-                "Manufacturer", "Manufacturer PN (link to datasheet)", "Misc. Notes", "Weld Notes:", "Cut Notes:", "Inventory Locations:"
-            ]
+        # Define expected columns
+        column_names = [
+            "Description", "Previously Called", "TYPE", "Fiber Category", "Resin Category", "Sequence Assist",
+            "Auto-Sequence", "PN Concatenation", "PN+Description Concatenation", "UOM", "Width (in)", "Length (in)",
+            "Arial Weight (gsm)", "Thickness (mm)", "$/Kg", "Heat capacity (J/C)", "Suggested Process Temp (deg F)",
+            "Manufacturer", "Manufacturer PN (link to datasheet)", "Misc. Notes", "Weld Notes:", "Cut Notes:", "Inventory Locations:"
+        ]
 
+        try:
+            # Try to read the CSV file
+            self.df = pd.read_csv(file_name)
+
+            # Correct any known typos in column names
+            if 'Heat capcity (J/C)' in self.df.columns:
+                self.df = self.df.rename(columns={'Heat capcity (J/C)': 'Heat capacity (J/C)'})
+
+            # Check for missing columns
+            missing_columns = [column for column in column_names if column not in self.df.columns]
+
+            if missing_columns:
+                raise ValueError(f"CSV file is missing required headers: {', '.join(missing_columns)}")
+
+        except (FileNotFoundError, ValueError, KeyError, pd.errors.ParserError) as e:
+            # If there's an error (file not found, missing columns, key error, or parsing error), create a default DataFrame
+            print(f"Error reading CSV file: {e}. Using default column names.")
             self.df = pd.DataFrame(columns=column_names)
 
+        # Ensure the DataFrame has the required columns, even if the CSV file had extra columns or missing some
+        for column in column_names:
+            if column not in self.df.columns:
+                self.df[column] = None
 
-        # Get unique fiber categories
-        fiber_categories = sorted(self.df["Fiber Category"].astype(str).unique())
+        # Get unique fiber categories, default to an empty list if the column is missing
+        fiber_categories = sorted(self.df["Fiber Category"].dropna().astype(str).unique()) if "Fiber Category" in self.df.columns else []
         self.resin_combos = []  # Initialize resin_combos as an empty list
 
         # Add combo boxes to the materialsTable
-        for row in range(6):  # Assuming you have 6 rows
+        for row in range(100):  # Assuming you have 6 rows
             fiber_combo = QtWidgets.QComboBox()
             fiber_combo.addItems(fiber_categories)
             self.materialsTable.setCellWidget(row, 1, fiber_combo)
@@ -152,11 +111,169 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # Connect signal to slot for fiber combo box
             fiber_combo.currentIndexChanged.connect(self.pick_fiber)
 
-    def add_dropdowns_to_row(self, row):
-        fiber_combo = QtWidgets.QComboBox()
-        fiber_combo.addItems(sorted(self.df["Fiber Category"].astype(str).unique()))
-        self.materialsTable.setCellWidget(row, 1, fiber_combo)
-        fiber_combo.currentIndexChanged.connect(self.pick_fiber)
+
+    def pick_fiber(self):
+        fiber_combo = self.sender()  # Get the combo box that sent the signal
+        fiber_selection = fiber_combo.currentText()
+
+        # Find the corresponding row
+        for row in range(self.materialsTable.rowCount()):
+            if self.materialsTable.cellWidget(row, 1) == fiber_combo:
+                row_index = row
+                break
+
+        # Clear previous resin combo box and items
+        resin_combo = self.materialsTable.cellWidget(row_index, 2)
+        if resin_combo:
+            resin_combo.clear()
+
+        # Filter dataframe based on fiber selection
+        filtered_df = self.df[self.df["Fiber Category"] == fiber_selection]
+
+        # Get unique resin categories for the selected fiber
+        resin_categories = sorted(filtered_df["Resin Category"].astype(str).unique())
+        print("Filtered Resin Categories:", resin_categories)
+
+        # Create a new resin combo box if it doesn't exist for this row
+        if not resin_combo:
+            resin_combo = QtWidgets.QComboBox()
+            resin_combo.currentIndexChanged.connect(self.pick_resin)
+            self.materialsTable.setCellWidget(row_index, 2, resin_combo)
+
+        # Add items to the resin combo box
+        resin_combo.addItems(resin_categories)
+
+    def pick_resin(self):
+        resin_combo = self.sender()  # Get the combo box that sent the signal
+        resin_selection = resin_combo.currentText()
+        print(f"Selected Resin: {resin_selection}")
+
+        # Find the corresponding row
+        for row in range(self.materialsTable.rowCount()):
+            if self.materialsTable.cellWidget(row, 2) == resin_combo:
+                row_index = row
+                break
+
+        # Clear previous description combo box and items
+        description_combo = self.materialsTable.cellWidget(row_index, 3)
+        if description_combo:
+            description_combo.clear()
+
+        fiber_combo = self.materialsTable.cellWidget(row_index, 1)
+        fiber_selection = fiber_combo.currentText()
+
+        # Filter dataframe based on fiber and resin selection
+        filtered_df = self.df[
+            (self.df["Fiber Category"] == fiber_selection)
+            & (self.df["Resin Category"] == resin_selection)
+        ]
+
+        
+
+        # Get unique descriptions for the selected fiber and resin
+        descriptions = sorted(
+            filtered_df["PN+Description Concatenation"].astype(str).unique()
+        )
+
+        print("Filtered Descriptions:", descriptions)
+
+        # Create a new description combo box if it doesn't exist for this row
+        if not description_combo:
+            description_combo = QtWidgets.QComboBox()
+            description_combo.currentIndexChanged.connect(self.pick_description)
+            self.materialsTable.setCellWidget(row_index, 3, description_combo)
+
+        print("HELLO!")
+        # Add items to the description combo box
+        description_combo.addItems(descriptions)
+
+    
+
+    def pick_description(self):
+        description_combo = self.sender()  # Get the combo box that sent the signal
+        description_selection = description_combo.currentText()
+        print(f"Selected Description: {description_selection}")
+
+        print("HERE1")
+
+        # Find the corresponding row
+        for row in range(self.materialsTable.rowCount()):
+            if self.materialsTable.cellWidget(row, 3) == description_combo:
+                row_index = row
+                break
+
+        # Clear previous location combo box and items
+        location_combo = self.materialsTable.cellWidget(row_index, 4)
+        if location_combo:
+            location_combo.clear()
+
+        print("HERE2")
+        # Filter dataframe based on description selection
+        filtered_df = self.df[
+            (self.df["PN+Description Concatenation"] == description_selection)
+        ]
+
+        print("Filtered DataFrame for Locations:", filtered_df)
+        
+        # Combine location values into a single column
+        location_col_index = self.df.columns.get_loc("Inventory Locations:")
+        for i, row in filtered_df.iterrows():
+            # Get the values from the "Location" column to the last column
+            location_values = row.iloc[location_col_index:].astype(str)
+            print(location_values)
+            # Combine the values into a single comma-separated string
+            combined_location = ",".join(location_values)
+            # Update the "Location" column with the combined value
+            filtered_df.at[i, "Inventory Locations:"] = combined_location
+
+        # Get unique locations for the selected description
+        locations = sorted(
+            filtered_df["Inventory Locations:"].astype(str).unique()
+        )
+
+        print("Filtered Locations:", locations)
+
+        # Create a new location combo box if it doesn't exist for this row
+        if not location_combo:
+            location_combo = QtWidgets.QComboBox()
+            self.materialsTable.setCellWidget(row_index, 4, location_combo)
+
+        # Add items to the location combo box
+        location_combo.addItems(locations)
+
+
+
+    def get_materials_used(self):
+        target_range = self.stackupInfoTable.item(2, 0)  # Third row, first column
+        if target_range is None:
+            print("Target Range is None")  # Debugging statement
+            return
+
+        selected_material = []
+        selected_pnconcatdescription = []
+        for row in range(100):
+            item = self.materialsTable.item(row, 0)
+            if item is not None:
+                material = item.text()
+                selected_material.append(material)
+                description_combo = self.materialsTable.cellWidget(row, 3)
+                if description_combo:  # Check if description_combo is not None
+                    selected_pnconcatdescription.append(description_combo.currentText())
+
+        used_materials = []
+        materials_breakdown = []
+
+        for i, pnconcatdescription in enumerate(selected_pnconcatdescription):
+            matching_row = self.df[
+                self.df["PN+Description Concatenation"] == pnconcatdescription
+            ]
+            if not matching_row.empty:
+                pn_concatenation = matching_row.iloc[0]["PN Concatenation"]
+                material = selected_material[i]
+                used_materials.append(material)
+                materials_breakdown.append(f"{material}:{pn_concatenation}")
+
+        target_range.setText(",".join(materials_breakdown))
 
     def get_alphabet_letter(self, index):
         """Determines the letter going into the material column of the stackup tab. Relevant to generating the composition code.
@@ -174,6 +291,20 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             index //= 26
 
         return result
+    
+    def reset_materialsTable(self):
+        """Clears all values and resets the materialsTable to its initial state except the first column."""
+        for row in range(self.materialsTable.rowCount()):
+            self.remove_row_materialsTable()
+        
+        # Reinitialize the dropdowns
+        self.initialize_materials_dropdowns(self.materialCSV_here.text())
+    
+    def add_dropdowns_to_row(self, row):
+        fiber_combo = QtWidgets.QComboBox()
+        fiber_combo.addItems(sorted(self.df["Fiber Category"].astype(str) .unique ()))
+        self.materialsTable.setCellWidget(row, 1, fiber_combo)
+        fiber_combo.currentIndexChanged.connect (self.pick_fiber)
 
     def add_row_materialsTable(self):
         row_position = self.materialsTable.rowCount()
@@ -202,120 +333,6 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 )  # Make the item uneditable
                 item.setTextAlignment(QtCore.Qt.AlignCenter)  # Align text to the center
                 self.materialsTable.setItem(row, 0, item)
-
-    def pick_fiber(self):
-        fiber_combo = self.sender()  # Get the combo box that sent the signal
-        fiber_selection = fiber_combo.currentText()
-
-        # Find the corresponding row
-        for row in range(self.materialsTable.rowCount()):
-            if self.materialsTable.cellWidget(row, 1) == fiber_combo:
-                row_index = row
-                break
-
-        # Clear previous resin combo box and items
-        resin_combo = self.materialsTable.cellWidget(row_index, 2)
-        if resin_combo:
-            resin_combo.clear()
-
-        # Filter dataframe based on fiber selection
-        filtered_df = self.df[self.df["Fiber Category"] == fiber_selection]
-
-        # Get unique resin categories for the selected fiber
-        resin_categories = sorted(filtered_df["Resin Category"].astype(str).unique())
-
-        # Create a new resin combo box if it doesn't exist for this row
-        if not resin_combo:
-            resin_combo = QtWidgets.QComboBox()
-            resin_combo.currentIndexChanged.connect(self.pick_resin)
-            self.materialsTable.setCellWidget(row_index, 2, resin_combo)
-
-        # Add items to the resin combo box
-        resin_combo.addItems(resin_categories)
-
-    def pick_resin(self):
-        resin_combo = self.sender()  # Get the combo box that sent the signal
-        resin_selection = resin_combo.currentText()
-
-        # Find the corresponding row
-        for row in range(self.materialsTable.rowCount()):
-            if self.materialsTable.cellWidget(row, 2) == resin_combo:
-                row_index = row
-                break
-
-        # Clear previous description combo box and items
-        description_combo = self.materialsTable.cellWidget(row_index, 3)
-        if description_combo:
-            description_combo.clear()
-
-        fiber_combo = self.materialsTable.cellWidget(row_index, 1)
-        fiber_selection = fiber_combo.currentText()
-
-        # Filter dataframe based on fiber and resin selection
-        filtered_df = self.df[
-            (self.df["Fiber Category"] == fiber_selection)
-            & (self.df["Resin Category"] == resin_selection)
-        ]
-
-        # Get unique descriptions for the selected fiber and resin
-        descriptions = sorted(
-            filtered_df["PN+Description Concatenation"].astype(str).unique()
-        )
-
-        # Create a new description combo box if it doesn't exist for this row
-        if not description_combo:
-            description_combo = QtWidgets.QComboBox()
-            self.materialsTable.setCellWidget(row_index, 3, description_combo)
-
-        # Add items to the description combo box
-        description_combo.addItems(descriptions)
-
-    def get_materials_used(self):
-        target_range = self.stackupInfoTable.item(2, 0)  # Third row, first column
-        if target_range is None:
-            print("Target Range is None")  # Debugging statement
-            return
-
-        selected_material = []
-        selected_pnconcatdescription = []
-        for row in range(6):
-            item = self.materialsTable.item(row, 0)
-            if item is not None:
-                material = item.text()
-                selected_material.append(material)
-                description_combo = self.materialsTable.cellWidget(row, 3)
-                if description_combo:  # Check if description_combo is not None
-                    selected_pnconcatdescription.append(description_combo.currentText())
-
-        used_materials = []
-        materials_breakdown = []
-
-        for i, pnconcatdescription in enumerate(selected_pnconcatdescription):
-            matching_row = self.df[
-                self.df["PN+Description Concatenation"] == pnconcatdescription
-            ]
-            if not matching_row.empty:
-                pn_concatenation = matching_row.iloc[0]["PN Concatenation"]
-                material = selected_material[i]
-                used_materials.append(material)
-                materials_breakdown.append(f"{material}:{pn_concatenation}")
-
-        target_range.setText(",".join(materials_breakdown))
-
-    def reset_materialsTable(self):
-        """Clears all values and resets the materialsTable to its initial state except the first column."""
-        for row in range(self.materialsTable.rowCount()):
-            for col in range(
-                1, self.materialsTable.columnCount()
-            ):  # Start from column 1 to skip the first column
-                cell_widget = self.materialsTable.cellWidget(row, col)
-                if cell_widget:
-                    self.materialsTable.removeCellWidget(row, col)
-                    if isinstance(cell_widget, QtWidgets.QComboBox):
-                        cell_widget.deleteLater()
-
-        # Reinitialize the dropdowns
-        self.initialize_materials_dropdowns()
 
     #### FUNCTIONALITY ASSOCIATED WITH PROTOTYPING TAB ####
     ### --> GENERATOR TAB
@@ -457,33 +474,60 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     ################################################################################
 
     #### FUNCTIONALITY ASSOCIATED WITH CUSTOMER INFORMATION TAB ####
+    
+
+    def select_customer_csv(self):
+        """
+        Slot function that is called when the materialCSV_here QLineEdit is clicked.
+        Opens a file dialog that allows the user to select a file from their repositories.
+        """
+        options = QtWidgets.QFileDialog.Options()
+        options |= QtWidgets.QFileDialog.DontUseNativeDialog
+        file_name, _ = QtWidgets.QFileDialog.getOpenFileName(
+            self, "Select Customer CSV", "", "CSV Files (*.csv)", options=options
+        )
+        if file_name:
+            self.customerCSV_here.setText(file_name)
+            self.initialize_customer_dropdowns(file_name)
 
     def initialize_customer_dropdowns(self, file_name):
-        """
-        Initializes the dropdown menus in the UI for customer information.
+        # Define expected columns
+        
+        column_names = [
+            "CLIENT", "PART", "TARGET PARTS", "PLIES", "STACKUP", "LENGTH (0 DEGREES)", "WIDTH (90 DEGREES)",
+            "PARTS/LENGTH", "PARTS/WIDTH", "LENGTH MARGIN", "WIDTH MARGIN", "PANEL LENGTH", "PANEL WIDTH",
+            "MATERIALS", "LAMINATION TEMP", "LAMINATION TIME", "Press Notch", "Oven Temperature (deg C)",
+            "Error Temperature (deg C)", "Pressure (MPa)", "Hold Time (sec)", "Cycle Time (sec)", "Mold Area (in^2)",
+            "Mold Qty (UL)", "Lam Tray (UL)", "Mold Top Temp (deg C)", "Mold Bot Temp (deg C)", "Mold Release (UL)",
+            "Top Mold Insulation Spacer (UL)", "Bot Mold Insulation Spacer (UL)", "Mold Direction - Sticker Front (UL)",
+            "Tray Width (in)", "Tray alignment position 1 (in)", "Tray alignment position 2 (in)", "Bolt Configuration (UL)"
+        ]
 
-        Reads a CSV file containing customer data, populates the CLIENT dropdown menu,
-        and connects signals to slots for the CLIENT and PART dropdown menus.
-        """
-        # Read CSV file
         try:
+            # Try to read the CSV file
             self.customer_df = pd.read_csv(file_name)
-        except FileNotFoundError:
-            column_names = [
-                "CLIENT", "PART", "TARGET PARTS", "PLIES", "STACKUP", "LENGTH (0 DEGREES)", "WIDTH (90 DEGREES)",
-                "PARTS/LENGTH", "PARTS/WIDTH", "LENGTH MARGIN", "WIDTH MARGIN", "PANEL LENGTH", "PANEL WIDTH",
-                "MATERIALS", "LAMINATION TEMP", "LAMINATION TIME", "Press Notch", "Oven Temperature (deg C)",
-                "Error Temperature (deg C)", "Pressure (MPa)", "Hold Time (sec)", "Cycle Time (sec)", "Mold Area (in^2)",
-                "Mold Qty (UL)", "Lam Tray (UL)", "Mold Top Temp (deg C)", "Mold Bot Temp (deg C)", "Mold Release (UL)",
-                "Top Mold Insulation Spacer (UL)", "Bot Mold Insulation Spacer (UL)", "Mold Direction - Sticker Front (UL)",
-                "Tray Width (in)", "Tray alignment position 1 (in)", "Tray alignment position 2 (in)", "Bolt Configuration (UL)"
-            ]
 
+            # Strip leading/trailing spaces from the column names
+            self.customer_df.columns = self.customer_df.columns.str.strip()
+
+            # Check for missing columns
+            missing_columns = [column for column in column_names if column not in self.customer_df.columns]
+
+            if missing_columns:
+                raise ValueError(f"CSV file is missing required headers: {', '.join(missing_columns)}")
+
+        except (FileNotFoundError, ValueError, KeyError, pd.errors.ParserError) as e:
+            # If there's an error (file not found, missing columns, key error, or parsing error), create a default DataFrame
+            print(f"Error reading CSV file: {e}. Using default column names.")
             self.customer_df = pd.DataFrame(columns=column_names)
 
+        # Ensure the DataFrame has the required columns, even if the CSV file had extra columns or was missing some
+        for column in column_names:
+            if column not in self.customer_df.columns:
+                self.customer_df[column] = None
 
-        # Get unique CLIENT categories
-        client_categories = sorted(self.customer_df["CLIENT"].astype(str).unique())
+        # Get unique CLIENT categories, default to an empty list if the column is missing
+        client_categories = sorted(self.customer_df["CLIENT"].dropna().astype(str).unique()) if "CLIENT" in self.customer_df.columns else []
 
         # Add combo boxes to the productionInfo
         for row in range(6):  # Assuming you have 6 rows
@@ -578,6 +622,77 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.productionInfo.setCellWidget(row, 0, client_combo)
         client_combo.currentIndexChanged.connect(self.pick_client)
 
+    def laminationSheet(self):
+        for row in range(self.productionInfo.rowCount()):
+            part_item = self.productionInfo.item(row, 4)
+            if part_item and part_item.text():  # Ensure the item exists and has text
+                target_parts_item = self.productionInfo.item(row, 2)
+                try:
+                    target_parts = float(target_parts_item.text())
+                    parts_per_length = float(self.productionInfo.item(row, 7).text())
+                    parts_per_width = float(self.productionInfo.item(row, 8).text())
+                    if parts_per_length != 0 and parts_per_width != 0:
+                        calculated_value = math.ceil(target_parts / (parts_per_length * parts_per_width))
+                        self.laminationTable.setItem(row, 0, QTableWidgetItem(str(calculated_value)))
+                    else:
+                        self.laminationTable.setItem(row, 0, QTableWidgetItem("NaN"))
+                except ValueError as ve:
+                    print(f"ValueError processing row {row}: {ve}")
+                    self.laminationTable.setItem(row, 0, QTableWidgetItem("NaN"))
+                except Exception as e:
+                    print(f"Error processing row {row}: {e}")
+                    self.laminationTable.setItem(row, 0, QTableWidgetItem("NaN"))
+
+                # Populate the remaining cells in laminationTable
+                self.laminationTable.setItem(row, 1, QTableWidgetItem(self.productionInfo.item(row, 3).text()))
+                self.laminationTable.setItem(row, 2, QTableWidgetItem(self.productionInfo.item(row, 4).text()))
+                self.laminationTable.setItem(row, 3, QTableWidgetItem(self.productionInfo.item(row, 13).text()))
+                self.laminationTable.setItem(row, 4, QTableWidgetItem(self.productionInfo.item(row, 14).text()))
+                self.laminationTable.setItem(row, 5, QTableWidgetItem(self.productionInfo.item(row, 15).text()))
+
+
+    def calculate_dimensions(self, row, col):
+        # Only proceed if col is within the range 4:9
+        if 4 <= col <= 9:
+            if self.productionInfo.item(row, 4) and self.productionInfo.item(row, 4).text():
+                try:
+                    # Retrieve relevant cell items
+                    items = {
+                        "part_length": self.productionInfo.item(row, 5),
+                        "part_width": self.productionInfo.item(row, 6),
+                        "parts_per_length": self.productionInfo.item(row, 7),
+                        "parts_per_width": self.productionInfo.item(row, 8),
+                        "length_margin": self.productionInfo.item(row, 9),
+                        "width_margin": self.productionInfo.item(row, 10)
+                    }
+
+                    # Define helper function to convert item to float
+                    def get_float_value(item):
+                        return float(item.text()) if item else None
+
+                    # Retrieve float values
+                    values = {key: get_float_value(item) for key, item in items.items()}
+
+                    # Calculate panel length
+                    if all(values[key] is not None for key in ["part_length", "parts_per_length", "length_margin"]):
+                        panel_length = ceil(values["part_length"] * values["parts_per_length"] / 0.25) * 0.25 + values["length_margin"]
+                        self.productionInfo.setItem(row, 11, QTableWidgetItem(str(panel_length)))
+                    else:
+                        self.productionInfo.setItem(row, 11, QTableWidgetItem('NaN'))
+
+                    # Calculate panel width
+                    if all(values[key] is not None for key in ["part_width", "parts_per_width", "width_margin"]):
+                        panel_width = ceil(values["part_width"] * values["parts_per_width"] / 0.25) * 0.25 + values["width_margin"]
+                        self.productionInfo.setItem(row, 12, QTableWidgetItem(str(panel_width)))
+                    else:
+                        self.productionInfo.setItem(row, 12, QTableWidgetItem('NaN'))
+
+                except (ValueError, TypeError):
+                    # Set NaN if any conversion fails
+                    self.productionInfo.setItem(row, 11, QTableWidgetItem('NaN'))
+                    self.productionInfo.setItem(row, 12, QTableWidgetItem('NaN'))
+    
+    
     def readingOrder(self):
         num_rows = self.productionInfo.rowCount()
         num_columns = self.productionInfo.columnCount()
@@ -616,15 +731,16 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Convert the dictionary to a DataFrame
         customer_df = pd.DataFrame(table_data)
 
-        if self.material_csv_file_path:  # Check if material CSV file path is set
-            materials_df = pd.read_csv(self.material_csv_file_path)
-            if not customer_df.empty:
+        if not self.materialCSV_here.text() == 'Select Material CSV':
+            materials_df = pd.read_csv(self.materialCSV_here.text())
+            if not customer_df.empty and not materials_df.empty and \
+               "STACKUP" in customer_df.columns and "PN Concatenation" in materials_df.columns:
                 output_df = calculations(materials_df, customer_df)
                 return output_df
             else:
                 pass
         else:
-            print("Material CSV file path not set.")
+            print("One of the DataFrames is empty.")
             return None
 
     def populate_Production_Sheets(self):
@@ -693,7 +809,64 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         self.secondaryCutsTable.rowCount() - 1, column_index, item
                     )
             self.secondaryCutsTable.resizeColumnsToContents()
-    
+
+            print("HEREEEEE GIRL")
+            self.laminationSheet()
+
+
+    def save_table_to_csv(self):
+        # Create a new DataFrame to hold the table data
+        new_data = []
+
+        for row in range(self.productionInfo.rowCount()):
+            row_data = []
+            for col in range(self.productionInfo.columnCount()):
+                if col < 2:  # For combo boxes
+                    cell_widget = self.productionInfo.cellWidget(row, col)
+                    if cell_widget:
+                        row_data.append(cell_widget.currentText())
+                    else:
+                        row_data.append("")
+                else:  # For table items
+                    item = self.productionInfo.item(row, col)
+                    if item:
+                        row_data.append(item.text())
+                    else:
+                        row_data.append("")
+
+            new_data.append(row_data)
+
+        # Debug print statements
+        print("New Data Extracted from Table:")
+        for row in new_data:
+            print(row)
+
+        # Ensure that new_data has the same number of columns as customer_df
+        if len(new_data) > 0 and len(new_data[0]) != len(self.customer_df.columns):
+            print(f"Warning: Number of columns in new_data ({len(new_data[0])}) does not match customer_df ({len(self.customer_df.columns)})")
+            # Adjust new_data to have the same number of columns as customer_df
+            for row in new_data:
+                while len(row) < len(self.customer_df.columns):
+                    row.append("")
+                while len(row) > len(self.customer_df.columns):
+                    row.pop()
+
+        # Convert to DataFrame
+        new_df = pd.DataFrame(new_data, columns=self.customer_df.columns)
+
+        # Debug print statements
+        print("New DataFrame to Append:")
+        print(new_df)
+        print("Original DataFrame Columns:")
+        print(self.customer_df.columns)
+
+        # Append new_df to customer_df
+        updated_df = pd.concat([self.customer_df, new_df], ignore_index=True)
+
+        # Save to a new CSV file
+        updated_df.to_csv("updated_customer_data.csv", index=False)
+        print("Saved updated data to updated_customer_data.csv")
+
     def show_error_message(self, message):
         msg = QtWidgets.QMessageBox()
         msg.setIcon(QtWidgets.QMessageBox.Critical)
