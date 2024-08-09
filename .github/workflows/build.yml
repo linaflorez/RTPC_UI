@@ -1,0 +1,58 @@
+name: Build MacOS App and Publish Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger workflow on version tags like v1.0, v1.1, etc.
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10']  # Add the versions of Python you want to test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install py2app
+
+      - name: Build with py2app
+        run: |
+          python setup.py py2app
+
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: MyApp
+          path: dist/*.app
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref }}  # Use the pushed tag as the release tag
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
+
+      - name: Upload to Release
+        uses: actions/upload-release-asset@v2
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: dist/*.app
+          asset_name: MyApp-${{ github.ref }}.app
+          asset_content_type: application/zip
