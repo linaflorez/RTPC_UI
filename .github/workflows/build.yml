@@ -32,27 +32,15 @@ jobs:
         run: |
           python setup.py py2app
 
-      - name: Archive build artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: MyApp
-          path: dist/*.app
+      - name: Compress app into zip
+        run: zip -r MyApp-${{ github.ref }}.zip dist/*.app
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        with:
-          tag_name: ${{ github.ref }}  # Use the pushed tag as the release tag
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
+      - name: Install GitHub CLI
+        run: |
+          brew install gh
+
+      - name: Create Release and Upload Asset
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
-
-      - name: Upload to Release
-        uses: actions/upload-release-asset@v2
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/*.app
-          asset_name: MyApp-${{ github.ref }}.app
-          asset_content_type: application/zip
+        run: |
+          gh release create ${{ github.ref }} MyApp-${{ github.ref }}.zip --title "Release ${{ github.ref }}" --notes "Automatically generated release"
