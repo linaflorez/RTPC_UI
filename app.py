@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QTableWidgetItem,QLineEdit,QComboBox,QApplication,QMainWindow,QPushButton,QTableWidget,QVBoxLayout,QWidget,)
 from ui import Ui_MainWindow
-from generatingProductionRun import calculations as calculations
+from generate_production_run import calculations as calculations
 import pandas as pd
 import math
 from math import ceil, isnan
