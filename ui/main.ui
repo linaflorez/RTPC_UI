@@ -278,7 +278,7 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_6">
               <item>
-               <widget class="QPushButton" name="Select_Customer_CSV">
+               <widget class="QPushButton" name="Select_Material_CSV">
                 <property name="text">
                  <string>Select Material CSV</string>
                 </property>
@@ -1174,7 +1174,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <widget class="QPushButton" name="Select_Customer_CSV_2">
+           <widget class="QPushButton" name="Select_Customer_CSV">
             <property name="text">
              <string>Select Customer CSV</string>
             </property>
