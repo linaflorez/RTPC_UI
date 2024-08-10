@@ -16,7 +16,8 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         #### FUNCTIONALITY ASSOCIATED WITH PROTOTYPING TAB ####
         ### --> STACKUP TAB
-        self.materialCSV_here.cursorPositionChanged.connect(self.select_material_csv)
+        self.Select_Material_CSV.clicked.connect(self.select_material_csv)
+        self.Select_Customer_CSV.clicked.connect(self.select_customer_csv)
         self.initialize_materials_dropdowns("")
         self.compositionCode.clicked.connect(self.get_materials_used)
         self.clearMaterials.clicked.connect(self.reset_materialsTable)
@@ -33,7 +34,6 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         )
 
         #### FUNCTIONALITY ASSOCIATED WITH CUSTOMER INFORMATION TAB ####
-        self.customerCSV_here.cursorPositionChanged.connect(self.select_customer_csv)
         self.initialize_customer_dropdowns("")
         self.searchClients.clicked.connect(self.find_Clients)
         self.createNewProduct.clicked.connect(self.add_New_Product)
