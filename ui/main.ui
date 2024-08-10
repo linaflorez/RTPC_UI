@@ -39,7 +39,7 @@
     <item>
      <widget class="QTabWidget" name="mainTabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="PrototypingTab">
        <attribute name="title">
@@ -111,9 +111,6 @@
                    <bold>true</bold>
                   </font>
                  </property>
-                 <property name="textAlignment">
-                  <set>AlignCenter</set>
-                 </property>
                 </column>
                 <column>
                  <property name="text">
@@ -124,9 +121,6 @@
                    <weight>75</weight>
                    <bold>true</bold>
                   </font>
-                 </property>
-                 <property name="textAlignment">
-                  <set>AlignCenter</set>
                  </property>
                 </column>
                 <column>
@@ -139,9 +133,6 @@
                    <bold>true</bold>
                   </font>
                  </property>
-                 <property name="textAlignment">
-                  <set>AlignCenter</set>
-                 </property>
                 </column>
                 <column>
                  <property name="text">
@@ -153,9 +144,6 @@
                    <bold>true</bold>
                   </font>
                  </property>
-                 <property name="textAlignment">
-                  <set>AlignCenter</set>
-                 </property>
                 </column>
                 <column>
                  <property name="text">
@@ -166,9 +154,6 @@
                    <weight>75</weight>
                    <bold>true</bold>
                   </font>
-                 </property>
-                 <property name="textAlignment">
-                  <set>AlignCenter</set>
                  </property>
                 </column>
                 <item row="0" column="0">
@@ -293,24 +278,18 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_6">
               <item>
-               <widget class="QLineEdit" name="materialCSV_here">
+               <widget class="QPushButton" name="Select_Customer_CSV">
                 <property name="text">
                  <string>Select Material CSV</string>
                 </property>
                </widget>
               </item>
               <item>
-               <spacer name="horizontalSpacer_4">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
+               <widget class="QLineEdit" name="materialCSV_here">
+                <property name="text">
+                 <string/>
                 </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
+               </widget>
               </item>
              </layout>
             </item>
@@ -398,7 +377,7 @@
                  <x>0</x>
                  <y>0</y>
                  <width>587</width>
-                 <height>386</height>
+                 <height>380</height>
                 </rect>
                </property>
                <layout class="QHBoxLayout" name="horizontalLayout_29">
@@ -1195,24 +1174,18 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <widget class="QLineEdit" name="customerCSV_here">
+           <widget class="QPushButton" name="Select_Customer_CSV_2">
             <property name="text">
              <string>Select Customer CSV</string>
             </property>
            </widget>
           </item>
           <item>
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+           <widget class="QLineEdit" name="customerCSV_here">
+            <property name="text">
+             <string/>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
+           </widget>
           </item>
          </layout>
         </item>
@@ -1226,7 +1199,7 @@
         <item>
          <widget class="QTabWidget" name="l">
           <property name="currentIndex">
-           <number>3</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tab">
            <attribute name="title">
