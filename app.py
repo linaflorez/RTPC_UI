@@ -388,7 +388,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         target_range_second_row.setText(str(non_blank_count))
 
     def clear_stackupBreakdown_columns(self):
-        """Clears all the cells in stackupBreakdown except for the headers, and prints their values before clearing."""
+        """Clears all the cells in stackupBreakdown except for the headers"""
         row_count = self.stackupBreakdown.rowCount()
         column_count = self.stackupBreakdown.columnCount()
 
