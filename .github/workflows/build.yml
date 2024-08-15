@@ -39,9 +39,7 @@ jobs:
       - name: Build with py2app
         run: |
           python setup.py py2app
-
-      - name: Verify build
-        run: |
+          echo "Build completed"
           ls -lh dist/
           ls -lh dist/*.app
 
@@ -51,6 +49,7 @@ jobs:
           ls -lh MyApp-${{ env.TAG_NAME }}-${{ matrix.os }}.zip
 
       - name: Install GitHub CLI
+        if: runner.os == 'macOS-11'
         run: |
           brew install gh
 
