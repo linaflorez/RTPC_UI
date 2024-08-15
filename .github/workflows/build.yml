@@ -10,11 +10,12 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
-
     strategy:
       matrix:
         python-version: ['3.9']  # Add the versions of Python you want to test
+        os: [macos-11, macos-12]  # macos-11 for Intel, macos-12 for M1
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -40,7 +41,7 @@ jobs:
           python setup.py py2app
 
       - name: Compress app into zip
-        run: zip -r MyApp-${{ env.TAG_NAME }}.zip dist/*.app
+        run: zip -r MyApp-${{ env.TAG_NAME }}-${{ matrix.os }}.zip dist/*.app
 
       - name: Install GitHub CLI
         run: |
@@ -50,4 +51,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
         run: |
-          gh release create ${{ env.TAG_NAME }} MyApp-${{ env.TAG_NAME }}.zip --title "Release ${{ env.TAG_NAME }}" --notes "Automatically generated release"
+          gh release create ${{ env.TAG_NAME }} MyApp-${{ env.TAG_NAME }}-${{ matrix.os }}.zip --title "Release ${{ env.TAG_NAME }}" --notes "Automatically generated release"

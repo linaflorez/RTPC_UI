@@ -29,19 +29,18 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.stackupInfoTable.setItem(2, 0, item)
         self.setup_stackupBreakdown()
         self.clearStackup.clicked.connect(self.clear_stackupBreakdown_columns)
-        self.sendToCustomerInfoSheet.clicked.connect(
-            self.on_sendtoCustomerInfoSheet_clicked
-        )
+        self.settingNewProduct.clicked.connect(self.setNewProduct)
+        self.sendToCustomerInfoSheet.clicked.connect(self.ExisitingCustomerInInfoSheet)
 
         #### FUNCTIONALITY ASSOCIATED WITH CUSTOMER INFORMATION TAB ####
         self.initialize_customer_dropdowns("")
-        self.searchClients.clicked.connect(self.find_Clients)
-        self.createNewProduct.clicked.connect(self.add_New_Product)
+        # self.searchClients.clicked.connect(self.find_Clients)
+        # self.createNewProduct.clicked.connect(self.add_New_Product)
         self.customerAddRow.clicked.connect(self.add_row_customerTable)
         self.customerRemoveRow.clicked.connect(self.remove_row_customerTable)
         self.generateRun.clicked.connect(self.populate_Production_Sheets)
         self.productionInfo.cellChanged.connect(self.calculate_dimensions)    
-        self.pushButton_6.clicked.connect (self.save_table_to_csv)    
+        self.updateDatabase.clicked.connect(self.save_table_to_csv)    
 
 
     ################################################################################
@@ -187,14 +186,11 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Add items to the description combo box
         description_combo.addItems(descriptions)
 
-    
 
     def pick_description(self):
         description_combo = self.sender()  # Get the combo box that sent the signal
         description_selection = description_combo.currentText()
         print(f"Selected Description: {description_selection}")
-
-        print("HERE1")
 
         # Find the corresponding row
         for row in range(self.materialsTable.rowCount()):
@@ -207,7 +203,6 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if location_combo:
             location_combo.clear()
 
-        print("HERE2")
         # Filter dataframe based on description selection
         filtered_df = self.df[
             (self.df["PN+Description Concatenation"] == description_selection)
@@ -219,17 +214,20 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         location_col_index = self.df.columns.get_loc("Inventory Locations:")
         for i, row in filtered_df.iterrows():
             # Get the values from the "Location" column to the last column
-            location_values = row.iloc[location_col_index:].astype(str)
+            location_values = row.iloc[location_col_index:].dropna().astype(str)
             print(location_values)
             # Combine the values into a single comma-separated string
             combined_location = ",".join(location_values)
             # Update the "Location" column with the combined value
             filtered_df.at[i, "Inventory Locations:"] = combined_location
 
-        # Get unique locations for the selected description
-        locations = sorted(
-            filtered_df["Inventory Locations:"].astype(str).unique()
-        )
+       # Get unique locations for the selected description, splitting combined entries into individual ones
+        locations = []
+        for combined_location in filtered_df["Inventory Locations:"].astype(str).unique():
+            locations.extend(combined_location.split(','))
+
+        # Remove potential empty strings and sort the locations
+        locations = sorted(filter(None, locations))
 
         print("Filtered Locations:", locations)
 
@@ -418,53 +416,69 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         row, col, QtWidgets.QTableWidgetItem("")
                     )
 
-    def on_sendtoCustomerInfoSheet_clicked(self):
-
+    def ExisitingCustomerInInfoSheet(self):
         # Get the values from stackupInfoTable
-        value1 = (
-            self.stackupInfoTable.item(0, 0).text()
-            if self.stackupInfoTable.item(0, 0)
-            else ""
-        )
-        value2 = (
-            self.stackupInfoTable.item(1, 0).text()
-            if self.stackupInfoTable.item(1, 0)
-            else ""
-        )
-        value3 = (
-            self.stackupInfoTable.item(2, 0).text()
-            if self.stackupInfoTable.item(2, 0)
-            else ""
-        )
+        stackup_values = [
+            self.stackupInfoTable.item(i, 0).text() if self.stackupInfoTable.item(i, 0) else ""
+            for i in range(3)
+        ]
 
         # Calculate the actual row count of productionInfo
-        if self.productionInfo.rowCount() == 0:
-            row_count = 1
-        else:
-            row_count = self.productionInfo.rowCount()
+        row_count = max(1, self.productionInfo.rowCount())
 
         # Find the first empty row in the fifth column of productionInfo
         for row in range(row_count):
             item = self.productionInfo.item(row, 5)
             if item is None or item.text() == "":
+                print(f"Item: {item}, Text: {item.text() if item else 'None'}")  # Updated print statement to handle NoneType
+                # Insert a new row if necessary
+                self.productionInfo.insertRow(row)
+
                 # Set the values from stackupInfoTable to productionInfo in the first empty row found
-                item1 = QTableWidgetItem(value1)
-                item1.setTextAlignment(Qt.AlignCenter)
-                self.productionInfo.setItem(row, 4, item1)
+                client_combo = QComboBox()
+                client_combo.addItems(sorted(self.customer_df["CLIENT"].astype(str).unique()))
+                self.productionInfo.setCellWidget(row, 0, client_combo)
 
-                item2 = QTableWidgetItem(value2)
-                item2.setTextAlignment(Qt.AlignCenter)
-                self.productionInfo.setItem(row, 3, item2)
-
-                item3 = QTableWidgetItem(value3)
-                item3.setTextAlignment(Qt.AlignCenter)
-                self.productionInfo.setItem(row, 13, item3)
+                for col, value in zip([4, 3, 13], stackup_values):
+                    item = QTableWidgetItem(value)
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.productionInfo.setItem(row, col, item)
 
                 break  # Exit the loop after updating the first empty row
 
         # Check if no empty cell was found
-        if row == row_count - 1 and (item is not None and item.text() != ""):
-            print("No empty cell found in column 5")
+        else:
+            self.productionInfo.insertRow(row)
+            
+
+    def setNewProduct(self):
+        # Get the values from stackupInfoTable
+        stackup_values = [
+            self.stackupInfoTable.item(i, 0).text() if self.stackupInfoTable.item(i, 0) else ""
+            for i in range(3)
+        ]
+
+        # Calculate the actual row count of productionInfo
+        row_count = max(1, self.productionInfo.rowCount())
+
+        # Find the first empty row in the fifth column of productionInfo
+        for row in range(row_count):
+            item = self.productionInfo.item(row, 5)
+            if item is None or item.text() == "":
+                # Insert a new row if necessary
+                self.productionInfo.insertRow(row)
+
+                for col, value in zip([4, 3, 13], stackup_values):
+                    item = QTableWidgetItem(value)
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.productionInfo.setItem(row, col, item)
+
+                break  # Exit the loop after updating the first empty row
+
+        # Check if no empty cell was found
+        else:
+            self.productionInfo.insertRow(row)
+
 
     ########################################
     ### End of Prototyping Tab functions ###
@@ -488,6 +502,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         )
         if file_name:
             self.customerCSV_here.setText(file_name)
+            self.customer_file_name = file_name
             self.initialize_customer_dropdowns(file_name)
 
     def initialize_customer_dropdowns(self, file_name):
@@ -622,38 +637,10 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.productionInfo.setCellWidget(row, 0, client_combo)
         client_combo.currentIndexChanged.connect(self.pick_client)
 
-    def laminationSheet(self):
-        for row in range(self.productionInfo.rowCount()):
-            part_item = self.productionInfo.item(row, 4)
-            if part_item and part_item.text():  # Ensure the item exists and has text
-                target_parts_item = self.productionInfo.item(row, 2)
-                try:
-                    target_parts = float(target_parts_item.text())
-                    parts_per_length = float(self.productionInfo.item(row, 7).text())
-                    parts_per_width = float(self.productionInfo.item(row, 8).text())
-                    if parts_per_length != 0 and parts_per_width != 0:
-                        calculated_value = math.ceil(target_parts / (parts_per_length * parts_per_width))
-                        self.laminationTable.setItem(row, 0, QTableWidgetItem(str(calculated_value)))
-                    else:
-                        self.laminationTable.setItem(row, 0, QTableWidgetItem("NaN"))
-                except ValueError as ve:
-                    print(f"ValueError processing row {row}: {ve}")
-                    self.laminationTable.setItem(row, 0, QTableWidgetItem("NaN"))
-                except Exception as e:
-                    print(f"Error processing row {row}: {e}")
-                    self.laminationTable.setItem(row, 0, QTableWidgetItem("NaN"))
-
-                # Populate the remaining cells in laminationTable
-                self.laminationTable.setItem(row, 1, QTableWidgetItem(self.productionInfo.item(row, 3).text()))
-                self.laminationTable.setItem(row, 2, QTableWidgetItem(self.productionInfo.item(row, 4).text()))
-                self.laminationTable.setItem(row, 3, QTableWidgetItem(self.productionInfo.item(row, 13).text()))
-                self.laminationTable.setItem(row, 4, QTableWidgetItem(self.productionInfo.item(row, 14).text()))
-                self.laminationTable.setItem(row, 5, QTableWidgetItem(self.productionInfo.item(row, 15).text()))
-
 
     def calculate_dimensions(self, row, col):
-        # Only proceed if col is within the range 4:9
-        if 4 <= col <= 9:
+        # Only proceed if col is within the range 4:10
+        if 4 <= col <= 10:
             if self.productionInfo.item(row, 4) and self.productionInfo.item(row, 4).text():
                 try:
                     # Retrieve relevant cell items
@@ -693,7 +680,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.productionInfo.setItem(row, 12, QTableWidgetItem('NaN'))
     
     
-    def readingOrder(self):
+    def readingInTableContents(self):
         num_rows = self.productionInfo.rowCount()
         num_columns = self.productionInfo.columnCount()
 
@@ -706,6 +693,28 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Initialize a dictionary to hold the table data
         table_data = {header: [] for header in headers}
 
+        # Define the columns to check for float values
+        float_columns = [2, 3, 5, 6, 7, 8, 9, 10, 11, 12]
+
+        # Function to check if a value can be converted to float
+        def is_float(value):
+            try:
+                float(value)
+                return True
+            except ValueError:
+                return False
+
+        # Validate all elements in the float columns
+        for row in range(num_rows):
+            for col in float_columns:
+                item = self.productionInfo.item(row, col)
+                if not item or item.text() == "" or not is_float(item.text()):
+                    print(f"Invalid value in row {row}, column {col}: {item.text() if item else 'None'}")
+                    # Create an empty DataFrame and return
+                    customer_df = pd.DataFrame(columns=headers)
+                    return customer_df
+
+        # If validation passes, build the table_data
         for row in range(num_rows):
             for col in range(num_columns):
                 if col in [0, 1]:  # Handle combo boxes
@@ -734,7 +743,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if not self.materialCSV_here.text() == 'Select Material CSV':
             materials_df = pd.read_csv(self.materialCSV_here.text())
             if not customer_df.empty and not materials_df.empty and \
-               "STACKUP" in customer_df.columns and "PN Concatenation" in materials_df.columns:
+            "STACKUP" in customer_df.columns and "PN Concatenation" in materials_df.columns:
                 output_df = calculations(materials_df, customer_df)
                 return output_df
             else:
@@ -742,15 +751,49 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             print("One of the DataFrames is empty.")
             return None
+        
+    def laminationSheet(self):
+        for row in range(self.productionInfo.rowCount()):
+            part_item = self.productionInfo.item(row, 4)
+            if part_item and part_item.text():  # Ensure the item exists and has text
+                target_parts_item = self.productionInfo.item(row, 2)
+                try:
+                    target_parts = float(target_parts_item.text())
+                    parts_per_length = float(self.productionInfo.item(row, 7).text())
+                    parts_per_width = float(self.productionInfo.item(row, 8).text())
+                    if parts_per_length != 0 and parts_per_width != 0:
+                        calculated_value = math.ceil(target_parts / (parts_per_length * parts_per_width))
+                        self.laminationTable.clearContents()
+                        self.laminationTable.setItem(row, 0, QTableWidgetItem(str(calculated_value)))
+                    else:
+                        self.laminationTable.clearContents()
+                        self.laminationTable.setItem(row, 0, QTableWidgetItem("NaN"))
+                except ValueError as ve:
+                    print(f"ValueError processing row {row}: {ve}")
+                    self.laminationTable.clearContents()
+                    self.laminationTable.setItem(row, 0, QTableWidgetItem("NaN"))
+                except Exception as e:
+                    print(f"Error processing row {row}: {e}")
+                    self.laminationTable.clearContents()
+                    self.laminationTable.setItem(row, 0, QTableWidgetItem("NaN"))
+
+                # Populate the remaining cells in laminationTable
+                self.laminationTable.setItem(row, 1, QTableWidgetItem(self.productionInfo.item(row, 3).text()))
+                self.laminationTable.setItem(row, 2, QTableWidgetItem(self.productionInfo.item(row, 4).text()))
+                self.laminationTable.setItem(row, 3, QTableWidgetItem(self.productionInfo.item(row, 13).text()))
+                self.laminationTable.setItem(row, 4, QTableWidgetItem(self.productionInfo.item(row, 14).text() if self.productionInfo.item(row, 14) and self.productionInfo.item(row, 14).text() else "NaN"))
+                self.laminationTable.setItem(row, 5, QTableWidgetItem(self.productionInfo.item(row, 15).text() if self.productionInfo.item(row, 15) and self.productionInfo.item(row, 15).text() else "NaN"))
+
 
     def populate_Production_Sheets(self):
-        df = self.readingOrder()
+        df = self.readingInTableContents()
 
         if df is None or df.empty:
             print("DataFrame is None or empty")
-            pass
         else:
             # Populate initial cuts table
+            # Clear all table widgets before populating
+            self.initialCutsTable.clearContents()
             self.initialCutsTable.setRowCount(0)
             for row_index, row in df.iterrows():
                 instructions_initial = f"Make {row['initial_number_of_cuts']} number of cuts at {row['cutangle']} degrees."
@@ -772,6 +815,8 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.initialCutsTable.resizeColumnsToContents()
 
             # Populate welding table
+
+            self.weldingTable.clearContents()
             self.weldingTable.setRowCount(0)
             for row_index, row in df.iterrows():
                 instructions_welding = f"Weld {row['initial_number_of_cuts']} number of cuts at {row['cutangle']} degrees."
@@ -791,6 +836,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.weldingTable.resizeColumnsToContents()
 
             # Populate secondary cuts table
+            self.secondaryCutsTable.clearContents()
             self.secondaryCutsTable.setRowCount(0)
             for row_index, row in df.iterrows():
                 instructions_secondary = f"Make {row['secondary_number_of_cuts']} number of cuts at {row['cutangle']} degrees."
@@ -809,25 +855,54 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         self.secondaryCutsTable.rowCount() - 1, column_index, item
                     )
             self.secondaryCutsTable.resizeColumnsToContents()
-
-            print("HEREEEEE GIRL")
             self.laminationSheet()
 
 
     def save_table_to_csv(self):
+        # Read the existing CSV file into customer_df
+        try:
+            self.customer_df = pd.read_csv(self.customer_file_name)
+        except FileNotFoundError:
+            print ("File not found. Exiting the function.")
+            return # Exit the function if the file does not exist
+
+        # Check if columns 4, 11, 12, and 13 have all non-NaN values
+        for row in range(self.productionInfo.rowCount()):
+            for col in [4, 11, 12, 13]:
+                item = self.productionInfo.item(row, col)
+                if not item or item.text() == "" or item.text().lower() == "nan":
+                    print(f"Skipping row {row} due to NaN value in column {col}")
+                    return  # Exit the function if any of the required columns have NaN
+
         # Create a new DataFrame to hold the table data
         new_data = []
 
         for row in range(self.productionInfo.rowCount()):
             row_data = []
             for col in range(self.productionInfo.columnCount()):
-                if col < 2:  # For combo boxes
+                if col == 0:  # Handle combo box or text box in the first column
                     cell_widget = self.productionInfo.cellWidget(row, col)
-                    if cell_widget:
-                        row_data.append(cell_widget.currentText())
+                    if cell_widget and isinstance(cell_widget, QComboBox):
+                        selected_text = cell_widget.currentText()
+                        row_data.append(selected_text)
                     else:
-                        row_data.append("")
-                else:  # For table items
+                        item = self.productionInfo.item(row, col)
+                        if item:
+                            row_data.append(item.text())
+                        else:
+                            row_data.append("")
+                elif col == 1:  # Handle combo box or text box in the second column
+                    cell_widget = self.productionInfo.cellWidget(row, col)
+                    if cell_widget and isinstance(cell_widget, QComboBox):
+                        selected_text = cell_widget.currentText()
+                        row_data.append(selected_text)
+                    else:
+                        item = self.productionInfo.item(row, col)
+                        if item:
+                            row_data.append(item.text())
+                        else:
+                            row_data.append("")
+                else:  # For other table items
                     item = self.productionInfo.item(row, col)
                     if item:
                         row_data.append(item.text())
@@ -835,6 +910,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         row_data.append("")
 
             new_data.append(row_data)
+
 
         # Debug print statements
         print("New Data Extracted from Table:")
